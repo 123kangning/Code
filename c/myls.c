@@ -198,14 +198,11 @@ void ls_do(const char*path,int mode){
         if(!strcmp(path,"/"))sprintf(path_full,"/%s",file_name[i]);
         else sprintf(path_full,"%s/%s",path,file_name[i]);
         if(lstat(path_full,&sta)==-1){
-            //display_err(path,__LINE__);
             fprintf(stderr, "line: %d ",__LINE__);
             perror("opendir");
             free(path_full);
             free(file_name[i]);
-            free(ls_r);
-            free(file_name);
-            return;
+            continue;
         }
 
         if(mode & PARAM_I)printf("%ld ",sta.st_ino);
