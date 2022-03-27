@@ -4,9 +4,12 @@
 
 int main(void)
 {
-    int fd[2];
+    int fd[2],ret;
     pid_t pid;
-    pipe(fd);
+    if((ret=pipe(fd))==-1){
+        perror("pipe error");
+        exit(1);
+    }
     pid=fork();
     switch(pid)
     {
