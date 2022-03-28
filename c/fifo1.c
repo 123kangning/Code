@@ -8,14 +8,13 @@
 
 int main(void)
 {
-    int ret=mkfifo("myfifo",0664);
     int fd0,fd1;
     char*buf=(char*)malloc(1024);
-    if(ret==-1){
-        perror("fifo");
+    if((fd0=open("myfifo",O_RDONLY))==-1){
+        perror("open");
         exit(1);
     }
-    if((fd0=open("1",O_RDONLY))==-1){
+    if((fd1=open("1.c",O_WRONLY))==-1){
         perror("open");
         exit(1);
     }
@@ -23,11 +22,12 @@ int main(void)
         perror("read");
         exit(1);
     }
-    if(write(ret,buf,1024)==-1){
+    if(write(fd1,buf,1024)==-1){
         perror("write");
         exit(1);
     }
-    close(ret);
     close(fd0);
+    close(fd1);
+    //printf("%s",buf);
     return 0;
 }
