@@ -14,20 +14,13 @@ int main(void)
         perror("open");
         exit(1);
     }
-    if((fd1=open("1.c",O_WRONLY))==-1){
-        perror("open");
-        exit(1);
-    }
-    if(read(fd0,buf,1024)==-1){
+    if(read(fd0,buf,9)==-1){
         perror("read");
         exit(1);
     }
-    if(write(fd1,buf,1024)==-1){
-        perror("write");
-        exit(1);
-    }
+    printf("read success here\n");
+    printf("-----\n%s\n-----",buf);
     close(fd0);
-    close(fd1);
-    //printf("%s",buf);
+    unlink("myfifo");
     return 0;
 }

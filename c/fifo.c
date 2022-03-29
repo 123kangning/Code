@@ -9,25 +9,22 @@
 int main(void)
 {
     int ret=mkfifo("myfifo",0664);
-    int fd0,fd1;
-    char*buf=(char*)malloc(1024);
+    int fd0;
+    char*buf="fifo_fifo";
     if(ret==-1){
         perror("fifo");
         exit(1);
     }
-    if((fd0=open("1",O_RDONLY))==-1){
+    if((fd0=open("myfifo",O_WRONLY))==-1){
         perror("open");
         exit(1);
     }
-    if(read(fd0,buf,1024)==-1){
-        perror("read");
-        exit(1);
-    }
-    if(write(ret,buf,1024)==-1){
+    // sleep(10);
+    if(write(fd0,buf,9)==-1){
         perror("write");
         exit(1);
     }
-    close(ret);
+    printf("write success");
     close(fd0);
     return 0;
 }
