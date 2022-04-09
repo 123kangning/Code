@@ -6,16 +6,44 @@
 #include <sys/stat.h>
 #include <sys/mman.h>
 #include <fcntl.h>
+#include <string.h>
+
+char **cutcmd(char *input)
+{
+    char **cmd = (char **)malloc(sizeof(char *) * 100);
+    int len = 0, count = 0, pi = 0, i = 0;
+
+    int l = strlen(input);
+    while (len < l)
+    {
+
+        cmd[count] = (char *)malloc(sizeof(char) * 20);
+        while (len < l && (input[len] != ' '))
+        {
+            len++;
+        }
+        strncpy(cmd[count++], input + i, len - i);
+
+        i = len;
+
+        while (input[len] == ' ' || input[len] == '|')
+        {
+            i++;
+            len++;
+        }
+    }
+    return cmd;
+}
 
 int main(void)
 {
-    int fd;
-    if((fd=open("myls.c",O_RDWR))==-1){
-        perror("open");
-        exit(1);
-    }
-    void*p=mmap(NULL,4095,PROT_READ|PROT_WRITE,MAP_SHARED,fd,0);
-    printf("------------------------------------\n%s\n--------------------------------------",(char*)p);
-    //execl("/bin/bash","bash","-c","ls","-l",NULL);
+    
+    // printf("hello world\n");
+    // printf("hello world\n");
+    // printf("hello world\n");
+    char*p="ls -al";
+    char**tmp=cutcmd(p);
+    
+
     return 0;
 } 

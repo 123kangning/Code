@@ -18,7 +18,7 @@ int main(void)
         }
     }
     if(i<5){
-        sleep(5);
+        sleep(1);
         printf("\ni = %d\n",i);
         printf("I'm child ,my pid is %d ,ppid is %d\n",getpid(),getppid());
         sleep(10);

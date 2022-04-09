@@ -3,7 +3,11 @@
 
 int main(void)
 {
-    execl("/bin/ls","ls","-l",NULL);
-    
+    char* t[3] = {
+        "ls",
+        "-al"
+    };
+    execvp("ls",t);
+
     return 0;
 }

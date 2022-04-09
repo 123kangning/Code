@@ -1,0 +1,37 @@
+总用量 336
+-rwxrwxr-x 1 kangning kangning 28304 4月  10 01:11 1
+-rw-rw-r-- 1 kangning kangning   906 4月   9 14:14 1.c
+-rwxrwxr-x 1 kangning kangning 16984 4月   6 16:55 1.out
+-rw-rw-r-- 1 kangning kangning    25 4月   8 11:23 1.py
+-rw-rw-r-- 1 kangning kangning     0 4月  10 01:16 1.tx
+-rw-rw-r-- 1 kangning kangning   165 4月  10 01:07 1.txt
+-rw-rw-r-- 1 kangning kangning   150 4月   5 20:19 alarm.c
+-rwxrwxr-x 1 kangning kangning 16880 4月   9 23:51 a.out
+-rw-rw-r-- 1 kangning kangning   650 3月  26 21:42 closeonexec.c
+-rw-rw-r-- 1 kangning kangning   148 4月   9 17:29 exec.c
+-rw-rw-r-- 1 kangning kangning   339 3月  27 22:54 execlp_search.c
+prw-rw-r-- 1 kangning kangning     0 3月  28 21:55 f1
+-rwxrwxr-x 1 kangning kangning 16696 3月  27 20:39 fifo
+-rw-rw-r-- 1 kangning kangning   504 3月  29 16:35 fifo1.c
+-rw-rw-r-- 1 kangning kangning   547 3月  29 16:37 fifo.c
+-rwxrwxr-x 1 kangning kangning 16984 4月   6 16:56 -g
+-rw-rw-r-- 1 kangning kangning   546 4月   7 21:06 kill.c
+-rw-rw-r-- 1 kangning kangning    67 4月   9 20:56 ls
+-rw-rw-r-- 1 kangning kangning   105 4月   7 13:06 makefile
+-rwxrwxr-x 1 kangning kangning 22056 3月  26 20:47 myls
+-rw-rw-r-- 1 kangning kangning  6769 3月  27 11:34 myls.c
+-rw-rw-r-- 1 kangning kangning   573 3月  28 16:47 mysystem.c
+-rw-rw-r-- 1 kangning kangning    97 4月   6 16:39 new.c
+-rwxrwxr-x 1 kangning kangning 17088 3月  27 20:05 pipe
+-rw-rw-r-- 1 kangning kangning   917 3月  27 20:08 pipe1.c
+-rw-rw-r-- 1 kangning kangning  1167 4月   9 17:33 pipe.c
+-rwxrwxr-x 1 kangning kangning 23024 4月   8 12:07 shell
+-rw-rw-r-- 1 kangning kangning 12852 4月   7 15:41 shell1.c
+-rw-rw-r-- 1 kangning kangning 10768 4月  10 01:02 shell.c
+-rw-rw-r-- 1 kangning kangning 21344 4月  10 01:11 shell.o
+-rw-rw-r-- 1 kangning kangning   397 4月   6 20:00 sigactionset.c
+-rwxrwxr-x 1 kangning kangning 19968 4月   6 16:56 sigprocmask
+-rw-rw-r-- 1 kangning kangning   311 4月   6 19:39 sigprocmask.c
+-rw-rw-r-- 1 kangning kangning  2868 3月  29 16:58 system.c
+-rw-rw-r-- 1 kangning kangning   160 4月   9 23:50 test.c
+lrwxrwxrwx 1 kangning kangning    40 3月  26 21:31 tlpi-book -> /home/kangning/clone/top-study/tlpi-book
