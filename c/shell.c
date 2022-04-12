@@ -150,7 +150,7 @@ char **getcmd(int *p)
         if(strcmp(cmd[count-1],"~")==0){
             strcpy(cmd[count-1],"/home/kangning");
         }
-        printf("|%s|\n",cmd[count-1]);
+        //printf("|%s|\n",cmd[count-1]);
         while (input[len] == ' '||input[len]=='&'){
             if(input[len]=='&'){
                 bg=1;
@@ -222,7 +222,6 @@ char **cutcmd(char *input)
 
 void execcmd(char **cmd)
 {
-    //printf("execcmd run\n");
     pid_t pid;
     int status;
     pid = fork();
@@ -242,9 +241,6 @@ void execcmd(char **cmd)
                 perror("open");
             }
 
-            // if(ftruncate(fd,0)==-1){
-            //     fprintf(stderr,"error ftruncate\n");
-            // }
             dup2(fd, STDOUT_FILENO);
             close(fd);
             
@@ -272,12 +268,6 @@ void execcmd(char **cmd)
     default:
         if(!bg)
             mywait(pid, &status, 0);
-        
-        // for (int i = 0; i < (sizeof(cmd) / sizeof(cmd[0])); i++)
-        // {
-        //     free(cmd[i]);
-        // }
-        // free(cmd);
     }
 }
 
@@ -382,7 +372,6 @@ void piexec(char **cmd, int *p, int pipesize)
         {
             mywait(ppid, &status, 0);
         }
-        printf("reach parents\n");
         free(subcmd);
     }
 }
