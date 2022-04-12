@@ -223,7 +223,7 @@ int handleVar(struct cmd *pcmd,int n){
     return 0;
 }
 
-int parseArgs(){
+int parseArgs()
     /* get args of each cmd and  create cmd-node seperated by pipe */
     char beginItem=0,beginQuote=0,beginDoubleQuote=0,hasVar=0,c;
 	int begin,end;
