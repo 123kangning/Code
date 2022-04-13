@@ -10,8 +10,10 @@
 #include <sys/fcntl.h>
 #include <sys/stat.h>
 #include <errno.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
-int in = 0, out = 0, add = 0, bg = 0,cmdsize=100;
+int in = 0, out = 0, add = 0, bg = 0,cmdsize=100,realsize = 0;
 char*last;
 
 char **getcmd(int *p);
@@ -33,7 +35,7 @@ int main(void)
     last=(char*)malloc(sizeof(char)*100);
     while (1)
     {
-        out = 0, add = 0;
+        out = 0, add = 0,realsize = 0;
         int p[10] = {0}, sfd, fd, pipesize = 0;
         printf("# ");
         char **cmd = getcmd(p);
@@ -91,14 +93,14 @@ int main(void)
         }
         else
             execcmd(cmd);
-        
+        fflush(stdout);
         if(in){
             if(dup2(sfd,STDIN_FILENO)==-1){
                 fprintf(stderr,"error dup2\n");
             }
             in=0;
         }
-        for (int i = 0; i < cmdsize; i++)
+        for (int i = 0; i <= realsize; i++)
         {
             free(cmd[i]);
         }
@@ -118,16 +120,21 @@ char **getcmd(int *p)
 
     int l = strlen(input);
     if (l == 0){
+        free(cmd);
+        free(input);
         exit(0);
     }
     
     if(strcmp(input,"\n")==0){
         cmd[0]="\n";
+        free(cmd);
+        free(input);
         return cmd;
     }
     
         
     input[l - 1] = '\0';
+    //add_history(input);
     while (len < l - 1)
     {
         while (input[len] == ' ')
@@ -136,7 +143,7 @@ char **getcmd(int *p)
             i++;
         }
         
-        while (len<l && (input[len]!= ' ' && input[len]!= '|' && input[len]!= '>'&&input[len]!='<'&&input[len]!='&'))
+        while (len<l-1 && (input[len]!= ' ' && input[len]!= '|' && input[len]!= '>'&&input[len]!='<'&&input[len]!='&'))
         {
             if (input[len] == '&'){
                 bg = 1;
@@ -146,7 +153,9 @@ char **getcmd(int *p)
             len++;
         }
         cmd[count] = (char *)malloc(sizeof(char) * 20);
+        realsize++;
         strncpy(cmd[count++], input + i, len - i);
+        cmd[count-1][len-i]='\0';
         if(strcmp(cmd[count-1],"~")==0){
             strcpy(cmd[count-1],"/home/kangning");
         }
@@ -216,7 +225,6 @@ char **cutcmd(char *input)
             len++;
         }
     }
-    free(input);
     return cmd;
 }
 
@@ -244,8 +252,6 @@ void execcmd(char **cmd)
             dup2(fd, STDOUT_FILENO);
             close(fd);
             
-            
-            free(cmd[out]);
             cmd[out] = NULL;
         }
         if (add)
@@ -260,8 +266,6 @@ void execcmd(char **cmd)
             dup2(fd, STDOUT_FILENO);
             close(fd);
             
-            
-            free(cmd[add]);
             cmd[add] = NULL;
         }
         execvp(cmd[0], cmd);
@@ -292,7 +296,7 @@ void piexec(char **cmd, int *p, int pipesize)
     pid_t ppid;
 
     strcpy(subcmd, "");
-    for (int j = start; j < p[i]; j++)
+    for (int j = start; j < p[0]; j++)
     {
         if(cmd[j]){
             strcat(subcmd, cmd[j]);
