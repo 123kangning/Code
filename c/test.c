@@ -11,15 +11,24 @@
 #include <sys/stat.h>
 #include <errno.h>
 
+void swap(int fd0,int fd1){
+    char*buf0=(char*)malloc(10000);
+    char*buf1=(char*)malloc(10000);
+    read(fd0,buf0,10000);
+    read(fd1,buf1,10000);
+    ftruncate(fd0,0);
+    ftruncate(fd1,0);
+    printf("buf0 = \n%s\n",buf0);
+    printf("buf1 = \n%s\n",buf1);
+    write(fd1,buf0,10000);
+    write(fd0,buf1,10000);
+
+}
+
 int main(void)
 {
-    char **cmd = (char **)malloc(sizeof(char *) * 100);
-    for(int i=0;i<100;i++){
-        cmd[i]=(char*)malloc(100);
-    }
-    printf("\ncmd = %ld ,cmd[0] = %ld , size = %ld\n",sizeof(cmd),sizeof(cmd[0]),(sizeof(cmd)/sizeof(cmd[0])));
-    free(cmd[10]);
-    free(cmd[11]);
-    printf("\ncmd = %ld ,cmd[0] = %ld , size = %ld\n",sizeof(cmd),sizeof(cmd[0]),(sizeof(cmd)/sizeof(cmd[0])));
+    char*a=(char*)malloc(100);
+    printf("sizeof = %ld",sizeof(a));
+    free(a);a=NULL;
     return 0;
 }
