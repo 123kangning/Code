@@ -10,13 +10,11 @@
 #include <sys/fcntl.h>
 #include <sys/stat.h>
 #include <errno.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+
 
 int in = 0, out = 0, add = 0, bg = 0,cmdsize=100,realsize = 0;
 char*last;
 
-//void history(void);
 char **getcmd(int *p);
 char **cutcmd(char *input);
 void execcmd(char **cmd);
@@ -28,23 +26,19 @@ void newexec(char**cmd,int*p,int pipesize,int start,int head);
 
 int main(void)
 {
-    // sigset_t set;
-    // sigemptyset(&set);
-    // sigaddset(&set, SIGINT);
-    // sigprocmask(SIG_BLOCK, &set, NULL);
+    sigset_t set;
+    sigemptyset(&set);
+    sigaddset(&set, SIGINT);
+    sigprocmask(SIG_BLOCK, &set, NULL);
 
     last=(char*)malloc(sizeof(char)*100);
-    //char*buf=NULL;
-    //HIST_ENTRY ** his;
+
     while (1)
     {
         out = 0, add = 0,realsize = 0;
         int p[10] = {0}, sfd, fd, pipesize = 0;
         printf("# ");
-        // read_history(NULL);
-        // buf=readline("# ");
-        // add_history(buf);
-        // write_history(NULL);
+
         char **cmd = getcmd(p);
         if (strcmp(cmd[0],"\n")==0){
             free(cmd[0]);
@@ -102,7 +96,7 @@ int main(void)
         }
         if (p[0])
         {
-            piexec1(cmd, p, pipesize);
+            piexec(cmd, p, pipesize);
         }
         else
             execcmd(cmd);
@@ -127,20 +121,6 @@ int main(void)
     free(last);
     return 0;
 }
-
-// void history()
-// {
-   
-//     int i = 0;
-//     HIST_ENTRY ** his;
-//     his = history_list();
-//     while(his[i] != NULL)
-//     {
-   
-//         printf("%s\n", his[i]->line);
-//         i++;
-//     }
-// }
 
 
 char **getcmd(int *p)
@@ -329,109 +309,15 @@ void mywait(pid_t pid, int *status, int options)
         }
     }
 }
-// single pipe
+
 void piexec(char **cmd, int *p, int pipesize)
 {
-    char *subcmd = (char *)malloc(100);
-    int start = 0, i = 0, status;
-    pid_t ppid;
-
-    memset(subcmd,0,100);
-    for (int j = start; j < p[0]; j++)
-    {
-        if(cmd[j]){
-            strcat(subcmd, cmd[j]);
-            strcat(subcmd, " ");
-        }
-        
-    }
-    start=p[0];
-
-    ppid = fork();
-    if (ppid == -1)
-    {
-        perror("fork");
-    }
-    else if (ppid == 0)
-    {
-        pid_t pid;
-        int fd[2];
-        if (pipe(fd) == -1)
-        {
-            perror("pipe");
-        }
-        if ((pid = fork()) == -1)
-        {
-            perror("fork");
-        }
-        else if (pid == 0)
-        {
-            dup2(fd[1], STDOUT_FILENO);
-            close(fd[0]);
-            close(fd[1]);
-            char **tmp = cutcmd(subcmd);
-            execvp(cmd[0], tmp);
-        }
-        else{
-            close(fd[1]);
-            mywait(pid, &status, 0);
-            int res = dup2(fd[0], STDIN_FILENO);
-            if (res == -1)
-            {
-                fprintf(stderr, "error dup2\n");
-                exit(1);
-            }
-            close(fd[0]);
-            if (out)
-            {
-                int fd;
-                if ((fd = open(cmd[out], O_RDWR|O_CREAT|O_TRUNC, S_IWUSR | S_IRUSR)) == -1)
-                {
-                    perror("open");
-                }
-
-                dup2(fd, STDOUT_FILENO);
-                close(fd);
-                cmd[out] = NULL;
-            }
-            if (add)
-            {
-                int fd;
-
-                if ((fd = open(cmd[add], O_RDWR|O_CREAT, S_IWUSR | S_IRUSR)) == -1)
-                {
-                    perror("open");
-                }
-                lseek(fd, -1, SEEK_END);
-                dup2(fd, STDOUT_FILENO);
-                close(fd);
-                cmd[add] = NULL;
-            }
-            
-            execvp(cmd[start], cmd + start);
-        }
-    }
-    else if (ppid > 0)
-    {
-        if (!bg)
-        {
-            mywait(ppid, &status, 0);
-        }
-        free(subcmd);
-        subcmd=NULL;
-    }
-}
-//false multiple pipe
-void piexec1(char **cmd, int *p, int pipesize)
-{
-    char **subcmd = (char **)malloc(sizeof(char *) * pipesize);
+    char subcmd[10][50];
     int start = 0, i = 0, status;
     pid_t ppid;
 
     for (i = 0; i < pipesize; i++)
     {
-        subcmd[i] = (char *)malloc(sizeof(char) * 100);
-        memset(subcmd[i],0,100);
         for (int j = start; j < p[i]; j++)
         {
             if(cmd[j]){
@@ -593,15 +479,5 @@ void piexec1(char **cmd, int *p, int pipesize)
         }
         unlink("fifo1");
         unlink("fifo2");
-
-        printf("pipe = %d \n",pipesize);
-        for (i = 0; i < pipesize; i++)
-        {
-            printf("free subcmd[%d]\n",i);
-            free(subcmd[i]);
-            subcmd[i]=NULL;
-        }
-        free(subcmd);
-        subcmd=NULL;
     }
 }
