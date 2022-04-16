@@ -1,3 +1,0 @@
-the answer is 42
-
-gcc -fsanitize=address -g shell.c -o 1
