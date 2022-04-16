@@ -10,6 +10,10 @@
 #include <sys/fcntl.h>
 #include <sys/stat.h>
 #include <errno.h>
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
 
 int in = 0, out = 0, add = 0, bg = 0, cmdsize = 100, realsize = 0;
 char *last;
@@ -29,9 +33,14 @@ int main(void)
     sigemptyset(&set);
     sigaddset(&set, SIGINT);
     sigprocmask(SIG_BLOCK, &set, NULL);
+<<<<<<< HEAD
     setvbuf(stdout, NULL, _IONBF, 0);
 
     last = (char *)malloc(sizeof(char) * 100);
+=======
+
+    last=(char*)malloc(sizeof(char)*100);
+>>>>>>> origin/master
 
     while (1)
     {
@@ -132,6 +141,10 @@ int main(void)
     return 0;
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
 char **getcmd(int *p)
 {
     char **cmd = (char **)malloc(sizeof(char *) * cmdsize);
@@ -330,7 +343,11 @@ void mywait(pid_t pid, int *status, int options)
 
 void piexec(char **cmd, int *p, int pipesize)
 {
+<<<<<<< HEAD
     char subcmd[10][50]={};
+=======
+    char subcmd[10][50];
+>>>>>>> origin/master
     int start = 0, i = 0, status;
     pid_t ppid;
 

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 总用量 400
 drwxrwxr-x 2 kangning kangning  4096 4月  16 12:45 .
 drwxrwxr-x 7 kangning kangning    81 4月   8 00:00 ..
@@ -7,11 +8,24 @@ drwxrwxr-x 7 kangning kangning    81 4月   8 00:00 ..
 -rw------- 1 kangning kangning   300 4月  16 09:36 1.txt
 -rwxrwxr-x 1 kangning kangning 28448 4月  14 00:25 2
 -rw-rw-r-- 1 kangning kangning   828 4月  15 17:37 2.c
+=======
+总用量 392
+-rwxrwxr-x 1 kangning kangning 28840 4月  15 16:35 1
+-rw-rw-r-- 1 kangning kangning   632 4月  15 15:19 1.c
+-rw-rw-r-- 1 kangning kangning     0 4月  10 17:31 1.py
+-rw------- 1 kangning kangning     0 4月  15 17:05 1.txt
+-rwxrwxr-x 1 kangning kangning 28448 4月  14 00:25 2
+-rw-rw-r-- 1 kangning kangning   510 4月  15 16:07 2.c
+>>>>>>> origin/master
 -rw-rw-r-- 1 kangning kangning     2 4月  14 19:48 2.txt
 -rw------- 1 kangning kangning    24 4月  14 13:15 3.txt
 -rw------- 1 kangning kangning  2576 4月  14 13:15 5.txt
 -rw-rw-r-- 1 kangning kangning   150 4月   5 20:19 alarm.c
+<<<<<<< HEAD
 -rwxrwxr-x 1 kangning kangning 29000 4月  16 12:45 a.out
+=======
+-rwxrwxr-x 1 kangning kangning 34616 4月  15 17:28 a.out
+>>>>>>> origin/master
 -rw-rw-r-- 1 kangning kangning   953 4月  14 23:20 catch.c
 -rw-rw-r-- 1 kangning kangning   650 3月  26 21:42 closeonexec.c
 -rw-rw-r-- 1 kangning kangning   148 4月   9 17:29 exec.c
@@ -19,9 +33,15 @@ drwxrwxr-x 7 kangning kangning    81 4月   8 00:00 ..
 prw-rw-r-- 1 kangning kangning     0 3月  28 21:55 f1
 -rw------- 1 kangning kangning  8192 4月  10 22:33 fd0
 -rw------- 1 kangning kangning 11059 4月  10 22:33 fd1
+<<<<<<< HEAD
 -rw------- 1 kangning kangning     0 4月  16 12:48 fifo1
 -rw-rw-r-- 1 kangning kangning   504 3月  29 16:35 fifo1.c
 -rw------- 1 kangning kangning     0 4月  16 12:48 fifo2
+=======
+-rw------- 1 kangning kangning     0 4月  15 17:29 fifo1
+-rw-rw-r-- 1 kangning kangning   504 3月  29 16:35 fifo1.c
+-rw------- 1 kangning kangning     0 4月  15 17:29 fifo2
+>>>>>>> origin/master
 -rw-rw-r-- 1 kangning kangning   547 3月  29 16:37 fifo.c
 -rw-rw-r-- 1 kangning kangning   546 4月   7 21:06 kill.c
 -rw-rw-r-- 1 kangning kangning   105 4月   7 13:06 makefile
@@ -34,7 +54,11 @@ prw-rw-r-- 1 kangning kangning     0 3月  28 21:55 f1
 -rwxrwxr-x 1 kangning kangning 22504 4月  15 15:40 shell
 -rw-rw-r-- 1 kangning kangning 12851 4月  10 21:55 shell1.c
 -rw-rw-r-- 1 kangning kangning  7574 4月  15 17:10 shell2.c
+<<<<<<< HEAD
 -rw-rw-r-- 1 kangning kangning 12529 4月  16 12:44 shell.c
+=======
+-rw-rw-r-- 1 kangning kangning 12046 4月  15 17:28 shell.c
+>>>>>>> origin/master
 -rw-rw-r-- 1 kangning kangning 23872 4月  15 16:35 shell.o
 -rw-rw-r-- 1 kangning kangning   397 4月   6 20:00 sigactionset.c
 -rwxrwxr-x 1 kangning kangning 19968 4月   6 16:56 sigprocmask

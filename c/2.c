@@ -10,6 +10,7 @@
 #include <string.h>
 #include <math.h>
 
+<<<<<<< HEAD
 int search(int a){
     int i=0,b[100],count=0,sum=0;
     for(i=a-1;i>1;i--){
@@ -44,5 +45,20 @@ int main(void)
             sign=0;
     }
     if(sign)printf("None");
+=======
+int main(void)
+{
+    int i,j,n;
+    scanf("%d",&n);
+    if(n>30)n=30;
+    for(i=1;i<=n;i++){
+        for(j=1;j<100-i;j++){
+            if(i*5+j*2+100-j-i==150){
+                printf("%d %d %d\n",i,j,100-i-j);
+                break;
+            }
+        }
+    }
+>>>>>>> origin/master
     return 0;
 }
