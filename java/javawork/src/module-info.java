@@ -1,9 +1,0 @@
-/**
- * 
- */
-/**
- * @author kangning
- *
- */
-module javawork {
-}

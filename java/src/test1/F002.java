@@ -3,7 +3,7 @@ package test1;
  class A {
     public String s = "123";
 
-    public void show(A obj){
+    public void show(B obj){
         System.out.println("A and A");
     }
 
@@ -14,15 +14,12 @@ package test1;
 
 class B extends A{
     public String s = "456";
-
+//    public void show(B obj){
+//        System.out.println("B and B");
+//    }
     public void show(A obj){
         System.out.println("B and A");
     }
-
-    public void show(B obj){
-        System.out.println("B and B");
-    }
-
     public void show(E obj){
         System.out.println("B and E");
     }
