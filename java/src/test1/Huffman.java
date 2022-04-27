@@ -9,13 +9,15 @@ import java.util.Scanner;
 import static kotlin.reflect.jvm.internal.impl.builtins.StandardNames.FqNames.list;
 
 public class Huffman {
-    public static void main(String... args)  {
-
-
+    public static void main(String... args)  throws IOException{
+        Map<Character,Integer> map=account();
+        for(Map.Entry<Character, Integer> entry:map.entrySet()) {
+            System.out.println(entry.getKey()+"出现的次数"+entry.getValue());
+        }
 
 
     }
-    public Map<Character,Integer> account() throws IOException{
+    public static Map<Character,Integer> account() throws IOException{
         Scanner input=new Scanner(new FileInputStream("1.txt"));
         Map<Character,Integer> map=new HashMap<>();
         while(input.hasNext()){
