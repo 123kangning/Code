@@ -1,9 +1,6 @@
 package test1;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.*;
 
 
@@ -36,19 +33,22 @@ class Node implements Comparable{
     }
 }
 public class Huffman {
+    static int count=0;
+    static String src1="1.txt",src2="hfm2.txt",src3="hfm1.txt";
+    static String numCode="";
     public static void main(String... args)  throws IOException{
-        Scanner input=new Scanner(new FileInputStream("1.txt"));
-        PrintWriter output=new PrintWriter(new FileOutputStream("hfm1.txt"));
+
+        Scanner input=new Scanner(new FileInputStream(src1));
+        PrintWriter output=new PrintWriter(new FileOutputStream(src2));
         Map<Character,Integer> map=account(input);
         Node root =creatTree(map);
 
         setCode(root);
         //print(root);
-        input=new Scanner(new FileInputStream("1.txt"));
         Map<Character,String> map1=new HashMap<>();
         matchCode(root,map1);
-        printToFile(output,input,map1);
-        output.close();
+        printToFile(map1);
+        restoreTree(map1);
     }
     public static Map<Character,Integer> account(Scanner input) throws IOException{
         Map<Character,Integer> map=new HashMap<>();
@@ -131,13 +131,62 @@ public class Huffman {
         print(root.left);
         print(root.right);
     }
-    public static void printToFile(PrintWriter output,Scanner input,Map<Character,String> map){
+    public static void printToFile(Map<Character,String> map)throws IOException{
+        Scanner input=new Scanner(new FileInputStream(src1));
+        PrintWriter output=new PrintWriter(new FileOutputStream(src2));
         while(input.hasNext()){
             String s=input.next();
             for(char e: s.toCharArray()){
-                output.write(map.get(e));
+                numCode=numCode.concat(map.get(e));
             }
-            System.out.println();
         }
+        System.out.println("    "+numCode);
+        int code=0;
+        for(char e: numCode.toCharArray()){
+            if(count%32==0&&code!=0){
+                //System.out.println(code);
+                output.println(code);
+                code=0;
+            }
+            if(e=='0'){
+                code|=0;
+            }else{
+                code|=1;
+            }
+            count++;
+            code=code<<1;
+        }
+        code=code>>1;
+        //System.out.println(code);
+        output.println(code);
+        input.close();
+        output.close();
+    }
+    public static void restoreTree(Map<Character,String> map) throws IOException{
+        Scanner input=new Scanner(new FileInputStream(src2));
+        PrintWriter output=new PrintWriter(new FileOutputStream(src3));
+        String s=numCode;
+
+        System.out.println("s = "+s);
+        int len=s.length();
+        for(int i=0;i<len;i++){
+            for(int L=1;L<=len/2+1;L++){
+                int j=L+i;
+                if(j>len)break;
+                //System.out.println("i = "+i+" j = "+j);
+                String sub=s.substring(i,j);
+                //System.out.println(sub);
+                for(Map.Entry<Character,String> e: map.entrySet()){
+                    if(sub.equals(e.getValue())){
+                        //System.out.println(e.getKey());
+                        output.print(e.getKey());
+                        i+=L;
+                        L=0;
+                    }
+                }
+            }
+        }
+        input.close();
+        output.close();
     }
 }
