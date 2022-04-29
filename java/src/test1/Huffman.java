@@ -1,6 +1,7 @@
 package test1;
 
 import java.io.*;
+import java.math.BigInteger;
 import java.util.*;
 
 
@@ -34,12 +35,11 @@ class Node implements Comparable{
 }
 public class Huffman {
     static int count=0;
-    static String src1="1.txt",src2="hfm2.txt",src3="hfm1.txt";
+    static String src1="1.txt",src2="hfm1.txt",src3="restore.txt";
     static String numCode="";
     public static void main(String... args)  throws IOException{
 
         Scanner input=new Scanner(new FileInputStream(src1));
-        PrintWriter output=new PrintWriter(new FileOutputStream(src2));
         Map<Character,Integer> map=account(input);
         Node root =creatTree(map);
 
@@ -94,7 +94,7 @@ public class Huffman {
                 list.add(node);
             }
         }
-        return list.get(0);
+        return null;
     }
     public static void setCode(Node root){
         Node p=root;
@@ -112,16 +112,15 @@ public class Huffman {
             }
         }
     }
-    public static Map<Character,String> matchCode(Node root,Map<Character,String> map){
+    public static void matchCode(Node root,Map<Character,String> map){
         if(root==null){
-            return map;
+            return ;
         }
         matchCode(root.left,map);
         matchCode(root.right,map);
         if(root.getC()!='\0'){
             map.put(root.getC(),root.getCode());
         }
-        return map;
     }
     public static void print(Node root){
         if(root==null){
@@ -141,24 +140,20 @@ public class Huffman {
             }
         }
         System.out.println("    "+numCode);
-        int code=0;
+
+        BigInteger code=new BigInteger("0");
         for(char e: numCode.toCharArray()){
-            if(count%32==0&&code!=0){
-                //System.out.println(code);
-                output.println(code);
-                code=0;
-            }
             if(e=='0'){
-                code|=0;
+                code=code.or(new BigInteger("0"));
             }else{
-                code|=1;
+                code=code.or(new BigInteger("1"));
             }
             count++;
-            code=code<<1;
+            code=code.shiftLeft(1);
         }
-        code=code>>1;
-        //System.out.println(code);
-        output.println(code);
+        code=code.shiftRight(1);
+        System.out.println(code);
+        output.print(code);
         input.close();
         output.close();
     }
@@ -173,12 +168,9 @@ public class Huffman {
             for(int L=1;L<=len/2+1;L++){
                 int j=L+i;
                 if(j>len)break;
-                //System.out.println("i = "+i+" j = "+j);
                 String sub=s.substring(i,j);
-                //System.out.println(sub);
                 for(Map.Entry<Character,String> e: map.entrySet()){
                     if(sub.equals(e.getValue())){
-                        //System.out.println(e.getKey());
                         output.print(e.getKey());
                         i+=L;
                         L=0;
