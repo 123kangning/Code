@@ -1,24 +1,17 @@
 package test1;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Collection;
+import java.util.Collections;
 
 public class F001 {
-    public static void main(String... args){
-        Integer[] num=new Integer[]{1,5,2,3,4,0,12,43,23,13};
-        heapSort(num);
-        for(int e:num)System.out.print(e+" ");
-    }
-    public static <E> void heapSort(E[] list){
-        heapSort(list,(e1,e2)->((Comparable<E>)e1).compareTo(e2));
-    }
-    public static <E> void heapSort(E[] list, Comparator<E> c){
-        Heap<E> heap=new Heap<E>(c);
-        for(E e:list){
-            heap.add(e);
-        }
-        for(int i= heap.size()-1;i>=0;i--){
-            list[i]=heap.remove();
-        }
+    public static void main(String... args)throws IOException {
+        ArrayList<Integer> list=new ArrayList<>();
+        list.equals();
     }
 }
