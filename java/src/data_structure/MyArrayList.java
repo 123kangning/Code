@@ -81,6 +81,7 @@ public  class MyArrayList<E> implements MyList<E>,Iterable<E>{
         if(!(e instanceof MyList)){
             return false;
         }
+        return true;
     }
     public boolean contains(Object e){
         return indexOf(e)>=0;
