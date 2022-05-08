@@ -4,99 +4,19 @@ import java.io.*;
 import java.math.BigInteger;
 import java.util.*;
 
-
-class Node implements Comparable{
-    private char c;
-    private int weight;
-    private String code="";
-    Node left;
-    Node right;
-    public void setC(char c){
-        this.c=c;
+interface Tree<E>{
+    default int nodeCount(Node root){
+        if(root==null)return 0;
+        return nodeCount(root.left)+nodeCount(root.right)+1;
     }
-    public void setWeight(int weight){
-        this.weight=weight;
-    }
-    public void setCode(String c){
-        code=code.concat(c);
-    }
-    public char getC(){
-        return this.c;
-    }
-    public int getWeight(){
-        return this.weight;
-    }
-    public String getCode(){
-        return this.code;
-    }
-    public int compareTo(Object a){
-        return this.getWeight()-((Node)a).getWeight();
-    }
-}
-public class Huffman {
-    static int count=0;
-    static String src1="1.txt",src2="hfm1.txt",src3="restore.txt";
-    static String numCode="";
-    public static void main(String... args)  throws IOException{
-
-        Scanner input=new Scanner(new FileInputStream(src1));
-        Map<Character,Integer> map=account(input);
-        Node root =creatTree(map);
-
-        setCode(root);
-        //print(root);
-        Map<Character,String> map1=new HashMap<>();
-        matchCode(root,map1);
-        printToFile(map1);
-        restoreTree(map1);
-    }
-    public static Map<Character,Integer> account(Scanner input) throws IOException{
-        Map<Character,Integer> map=new HashMap<>();
-        while(input.hasNext()){
-            for(Character e: input.nextLine().toCharArray()){
-                if(map.get(e)==null){
-                    map.put(e,1);
-                }else{
-                    map.put(e,map.get(e)+1);
-                }
-            }
+    default int leafCount(Node root){
+        if(root.left==null&&root.right==null){//root is leaf
+            return 1;
         }
-        return map;
+        //root isn't leaf
+        return leafCount(root.left)+leafCount(root.right);
     }
-    public static Node creatTree(Map<Character,Integer> map){
-        LinkedList<Node> list=new LinkedList<>();
-        for(Map.Entry<Character,Integer> e: map.entrySet()){
-            Node node=new Node();
-            node.setC(e.getKey());
-            node.setWeight(e.getValue());
-            node.left=null;
-            node.right=null;
-            list.add(node);
-        }
-        while(list.size()>0){
-            Collections.sort(list);
-            if(list.size()==1){
-                return list.get(0);
-            }else{
-                Node node1=list.removeFirst();
-                Node node2=list.removeFirst();
-                Node node=new Node();
-                node.setWeight(node1.getWeight()+node2.getWeight());
-                node.setC('\0');
-
-                if(node1.getWeight()<node2.getWeight()){
-                    node.left=node1;
-                    node.right=node2;
-                }else{
-                    node.left=node2;
-                    node.right=node1;
-                }
-                list.add(node);
-            }
-        }
-        return null;
-    }
-    public static void setCode(Node root){
+    default void setCode(Node root){
         Node p=root;
         Deque<Node> deque=new LinkedList<>();
         deque.offer(p);
@@ -112,35 +32,237 @@ public class Huffman {
             }
         }
     }
-    public static void matchCode(Node root,Map<Character,String> map){
-        if(root==null){
-            return ;
+    default Node creatTree(Map<Character,Integer> map){
+        LinkedList<Node> list=new LinkedList<>();
+        for(Map.Entry<Character,Integer> e: map.entrySet()){
+            Node<Character> node=new Node<>();
+            node.setC(e.getKey());
+            node.setWeight(e.getValue());
+            node.left=null;
+            node.right=null;
+            list.add(node);
         }
-        matchCode(root.left,map);
-        matchCode(root.right,map);
-        if(root.getC()!='\0'){
-            map.put(root.getC(),root.getCode());
+        while(list.size()>0){
+            Collections.sort(list);
+            if(list.size()==1){
+                return list.get(0);
+            }else{
+                Node node1=list.removeFirst();
+                Node node2=list.removeFirst();
+                Node<Character> node=new Node<>();
+                node.setWeight(node1.getWeight()+node2.getWeight());
+                node.setC(null);
+
+                if(node1.getWeight()<node2.getWeight()){
+                    node.left=node1;
+                    node.right=node2;
+                }else{
+                    node.left=node2;
+                    node.right=node1;
+                }
+                list.add(node);
+            }
         }
+        return null;
     }
-    public static void print(Node root){
+    default void prePrint(Node root){
         if(root==null){
             return;
         }
         System.out.println(root.getC()+" "+root.getCode());
-        print(root.left);
-        print(root.right);
+        prePrint(root.left);
+        prePrint(root.right);
+    }
+    default void inPrint(Node root){
+        if(root==null){
+            return;
+        }
+        inPrint(root.left);
+        System.out.println(root.getC()+" "+root.getCode());
+        inPrint(root.right);
+    }
+    default void postPrint(Node root){
+        if(root==null){
+            return;
+        }
+        postPrint(root.left);
+        postPrint(root.right);
+        System.out.println(root.getC()+" "+root.getCode());
+    }
+    default void seqPrint(Node root){
+        if(root==null)return;
+        Deque<Node> queue=new ArrayDeque<>();
+        queue.addLast(root);
+        int head=0;
+        int tail=1;
+        while(head<tail){
+            if(queue.peekFirst().left!=null){
+                queue.addLast(queue.peekFirst().left);
+                tail++;
+            }
+            if(queue.peekFirst().right!=null){
+                queue.addLast(queue.peekFirst().right);
+                tail++;
+            }
+            System.out.println(queue.peekFirst().getC()+" "+queue.removeFirst().getCode());
+            head++;
+        }
+    }
+    default int searchTreeHigh(Node root){
+        if(root==null)return 0;
+        int m1=searchTreeHigh(root.left);
+        int m2=searchTreeHigh(root.right);
+        return 1+(m1>m2?m1:m2);
+    }
+    default Node searchNodeData(Node root,E data){
+        if(root==null)return null;
+        if(root.getC()==data)return root;
+        Node n1=searchNodeData(root.left,data);
+        Node n2=searchNodeData(root.right,data);
+        if(n1!=null)return n1;
+        if(n2!=null)return n2;
+        return null;
+    }
+//    default int nodeCountInSeq(Node root,int seq){
+//        if(seq>searchTreeHigh(root)){
+//            return -1;
+//        }
+//
+//    }
+}
+class Node<E> implements Comparable,Tree{
+
+    private E c;
+    private int weight;
+    private String code="";
+    Node left;
+    Node right;
+    public void setC(E c){
+        this.c=c;
+    }
+    public void setWeight(int weight){
+        this.weight=weight;
+    }
+    public void setCode(String c){
+        code=code.concat(c);
+    }
+    public E getC(){
+        return this.c;
+    }
+    public int getWeight(){
+        return this.weight;
+    }
+    public String getCode(){
+        return this.code;
+    }
+    public int compareTo(Object a){
+        return this.getWeight()-((Node)a).getWeight();
+    }
+}
+public class Huffman implements Tree{
+    static String src1="2.jpg",src2="hfm1.dat",src3="restore.txt";
+    public static void main(String... args)  throws IOException{
+        Tree tree=new Huffman();
+        Scanner input=new Scanner(new FileInputStream(src1));
+        Map<Character,Integer> map=account(input);
+        Node root =tree.creatTree(map);
+
+        tree.setCode(root);
+        //tree.inPrint(root);
+        Map<Character,String> map1=new HashMap<>();
+        preCode(root,map1);
+        printToFile(map1);
+        //tree.seqPrint(root);
+        //testSearchNodeData(root,'p');
+        //System.out.println("tree high is = "+tree.searchTreeHigh(root));
+//        System.out.println("tree nodeCount = "+tree.nodeCount(root));
+//        System.out.println("tree leafCount = "+tree.leafCount(root));
+//        for(Map.Entry<Character,String> e:map1.entrySet()){
+//            System.out.println(e.getKey()+" "+e.getValue());
+//        }System.out.println("--------------------------------------------------------------");
+        try{
+            restoreTree(map1);
+        }catch(ClassNotFoundException e){
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+    public static void testSearchNodeData(Node root,Character data){
+        Node<Character> test=new Node<>();
+        if((test= root.searchNodeData(root,data))!=null){
+            System.out.println(String.valueOf(test.getC()));
+        }else{
+            System.out.println("data "+data+" is not fount");
+        }
+    }
+    public static Map<Character,Integer> account(Scanner input) throws IOException{
+        Map<Character,Integer> map=new HashMap<>();
+        while(input.hasNext()){
+            String s=input.nextLine();
+            if(input.hasNext()){
+                s=s.concat("\n");
+            }
+            for(Character e: s.toCharArray()){
+                if(map.get(e)==null){
+                    map.put(e,1);
+                }else{
+                    map.put(e,map.get(e)+1);
+                }
+            }
+        }
+        return map;
+    }
+    public static void preCode(Node root,Map<Character,String> map){
+        if(root==null){
+            return ;
+        }
+        if(root.getC()!=null){
+            map.put((Character) root.getC(),root.getCode());
+        }
+        preCode(root.left,map);
+        preCode(root.right,map);
+    }
+    public static void inCode(Node root,Map<Character,String> map){
+        if(root==null){
+            return ;
+        }
+        inCode(root.left,map);
+        if(root.getC()!=null){
+            map.put((Character) root.getC(),root.getCode());
+        }
+        inCode(root.right,map);
+    }
+    public static void postCode(Node root,Map<Character,String> map){
+        if(root==null){
+            return ;
+        }
+        postCode(root.left,map);
+        postCode(root.right,map);
+        if(root.getC()!=null){
+            map.put((Character) root.getC(),root.getCode());
+        }
     }
     public static void printToFile(Map<Character,String> map)throws IOException{
         Scanner input=new Scanner(new FileInputStream(src1));
-        PrintWriter output=new PrintWriter(new FileOutputStream(src2));
+        ObjectOutputStream output=new ObjectOutputStream(new FileOutputStream(src2));
+
+        String numCode="";
         while(input.hasNext()){
-            String s=input.next();
+            String s=input.nextLine();
+            if(input.hasNext())s=s.concat("\n");
             for(char e: s.toCharArray()){
                 numCode=numCode.concat(map.get(e));
             }
         }
-        System.out.println("    "+numCode);
+        int i=0,count=0;
+        while(numCode.charAt(i++)=='0'){
+            count++;
+        }
+        output.write(count);
 
+        output.writeObject(map);
+
+        System.out.println("s1 = "+numCode);
         BigInteger code=new BigInteger("0");
         for(char e: numCode.toCharArray()){
             if(e=='0'){
@@ -148,21 +270,27 @@ public class Huffman {
             }else{
                 code=code.or(new BigInteger("1"));
             }
-            count++;
             code=code.shiftLeft(1);
         }
         code=code.shiftRight(1);
-        System.out.println(code);
-        output.print(code);
-        input.close();
+        output.writeObject(code);
+
         output.close();
     }
-    public static void restoreTree(Map<Character,String> map) throws IOException{
-        Scanner input=new Scanner(new FileInputStream(src2));
-        PrintWriter output=new PrintWriter(new FileOutputStream(src3));
-        String s=numCode;
+    public static void restoreTree(Map<Character,String> map) throws IOException, ClassNotFoundException {
+        Map<Character,String> map1=new TreeMap<>();
+        ObjectInputStream input=new ObjectInputStream(new FileInputStream(src2));
 
-        System.out.println("s = "+s);
+        int count=input.read();
+        String s="";
+        for(int i=0;i<count;i++)
+            s=s.concat("0");
+
+        map1=(Map<Character, String>)input.readObject();
+
+        FileOutputStream output=new FileOutputStream(src3);
+        BigInteger code=(BigInteger) input.readObject();
+        s=s.concat(code.toString(2));
         int len=s.length();
         for(int i=0;i<len;i++){
             for(int L=1;L<=len/2+1;L++){
@@ -171,14 +299,13 @@ public class Huffman {
                 String sub=s.substring(i,j);
                 for(Map.Entry<Character,String> e: map.entrySet()){
                     if(sub.equals(e.getValue())){
-                        output.print(e.getKey());
+                        output.write(e.getKey());
                         i+=L;
                         L=0;
                     }
                 }
             }
         }
-        input.close();
         output.close();
     }
 }
