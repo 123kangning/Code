@@ -5,34 +5,175 @@ import java.math.BigInteger;
 import java.util.*;
 
 interface Tree<E>{
-    default int nodeCount(Node root){
+    int nodeCount();
+    int leafCount();
+    Node creatTree(Map<Character,Integer> map);
+    void prePrint();
+    void inPrint();
+    void postPrint();
+    void seqPrint();
+    int searchTreeHigh();
+    Node searchNodeData(E data);
+    int nodeCountInSeq(int seq);
+    Node cloneTree();
+    Node imageForTree();
+
+    boolean checkNodeInTree(Node<E> data);
+
+}
+class  MyTree<E> implements Tree<E>{
+    Node<E> root=new Node<>();
+    MyTree (Map<Character,Integer> map){
+        root=creatTree(map);
+    }
+    public boolean isCompleteTree(){
+        return isCompleteTree(root);
+    }
+    public boolean isCompleteTree(Node<E> root){
+        if(root==null)return true;
+        if(searchTreeHigh(root.left)<searchTreeHigh(root.right))return false;
+        return isCompleteTree(root.left)&&isCompleteTree(root.right);
+
+    }
+    public int nodeCount(){
+        return nodeCount(root);
+    }
+    public int nodeCount(Node<E> root){
         if(root==null)return 0;
         return nodeCount(root.left)+nodeCount(root.right)+1;
     }
-    default int leafCount(Node root){
+    public int leafCount(){
+        return leafCount(root);
+    }
+    public int leafCount(Node<E> root){
         if(root.left==null&&root.right==null){//root is leaf
             return 1;
         }
         //root isn't leaf
         return leafCount(root.left)+leafCount(root.right);
     }
-    default void setCode(Node root){
-        Node p=root;
-        Deque<Node> deque=new LinkedList<>();
-        deque.offer(p);
-        while(deque.size()>0){
-            p=deque.poll();
-            if(p.left!=null){
-                p.left.setCode(p.getCode()+"0");
-                deque.offer(p.left);
+    public void prePrint(){
+        prePrint(root);
+    }
+    public void prePrint(Node<E> root){
+        if(root==null){
+            return;
+        }
+        System.out.println(root.getC()+" "+root.getCode());
+
+        prePrint(root.left);
+        prePrint(root.right);
+
+    }
+    public void inPrint(){
+        inPrint(root);
+    }
+    public void inPrint(Node<E> root){
+        if(root==null){
+            return;
+        }
+        inPrint(root.left);
+        System.out.println(root.getC()+" "+root.getCode());
+        inPrint(root.right);
+    }
+    public void postPrint(){
+        postPrint(root);
+    }
+    public void postPrint(Node<E> root){
+        if(root==null){
+            return;
+        }
+        postPrint(root.left);
+        postPrint(root.right);
+        System.out.println(root.getC()+" "+root.getCode());
+    }
+    public void seqPrint(){
+        seqPrint(root);
+    }
+    public void seqPrint(Node<E> root){
+        if(root==null)return;
+        Deque<Node> queue=new ArrayDeque<>();
+        queue.addLast(root);
+        int head=0;
+        int tail=1;
+        while(head<tail){
+            if(Objects.requireNonNull(queue.peekFirst()).left!=null){
+                queue.addLast(queue.peekFirst().left);
+                tail++;
             }
-            if(p.right!=null){
-                p.right.setCode(p.getCode()+"1");
-                deque.offer(p.right);
+            if(Objects.requireNonNull(queue.peekFirst()).right!=null){
+                queue.addLast(queue.peekFirst().right);
+                tail++;
             }
+            System.out.println(queue.peekFirst().getC()+" "+queue.removeFirst().getCode());
+            head++;
         }
     }
-    default Node creatTree(Map<Character,Integer> map){
+    public int searchTreeHigh(){
+        return searchTreeHigh(root);
+    }
+    public int searchTreeHigh(Node<E> root){
+        if(root==null)return 0;
+        int m1=searchTreeHigh(root.left);
+        int m2=searchTreeHigh(root.right);
+        return 1+(m1>m2?m1:m2);
+    }
+    public Node cloneTree(){
+        return cloneTree(root);
+    }
+    public Node cloneTree(Node<E> root){
+        if(root==null)return null;
+        Node<E> ans=new Node<>();
+        ans.setWeight(root.getWeight());
+        ans.setC(root.getC());
+        ans.setCode(root.getCode());
+        ans.left=cloneTree(root.left);
+        ans.right=cloneTree(root.right);
+        return root;
+    }
+    public Node searchNodeData(E data){
+        return searchNodeData(root,data);
+    }
+    public Node searchNodeData(Node<E> root,E data){
+        if(root==null)return null;
+        if(root.getC()==data)return root;
+        Node n1=searchNodeData(root.left,data);
+        Node n2=searchNodeData(root.right,data);
+        if(n1!=null)return n1;
+        if(n2!=null)return n2;
+        return null;
+    }
+    public int nodeCountInSeq(int seq){
+        //return -1 is meaning not this seq
+        //return 0 is meaning root is null
+        if(seq>searchTreeHigh(root)||seq<0){
+            return -1;
+        }
+        if(root==null)return 0;
+        Deque<Node> queue=new ArrayDeque<>();
+        queue.addLast(root);
+        int head=0;
+        int tail=1;
+        int count=0;
+        while(head<tail){
+            count++;
+            if(count==seq){
+                return tail-head;
+            }
+            if(Objects.requireNonNull(queue.peekFirst()).left!=null){
+                queue.addLast(queue.peekFirst().left);
+                tail++;
+            }
+            if(Objects.requireNonNull(queue.peekFirst()).right!=null){
+                queue.addLast(queue.peekFirst().right);
+                tail++;
+            }
+            queue.removeFirst();
+            head++;
+        }
+        return -1;
+    }
+    public Node creatTree(Map<Character,Integer> map){
         LinkedList<Node> list=new LinkedList<>();
         for(Map.Entry<Character,Integer> e: map.entrySet()){
             Node<Character> node=new Node<>();
@@ -65,72 +206,21 @@ interface Tree<E>{
         }
         return null;
     }
-    default void prePrint(Node root){
-        if(root==null){
-            return;
-        }
-        System.out.println(root.getC()+" "+root.getCode());
-        prePrint(root.left);
-        prePrint(root.right);
+    public Node imageForTree(){
+        return imageForTree(this.root);
     }
-    default void inPrint(Node root){
-        if(root==null){
-            return;
-        }
-        inPrint(root.left);
-        System.out.println(root.getC()+" "+root.getCode());
-        inPrint(root.right);
+    public Node imageForTree(Node<E> root){
+        if(this.root==null)return null;
+        Node<E> temp=imageForTree(root.left);
+        root.left=imageForTree(root.right);
+        root.right=temp;
+        return root;
     }
-    default void postPrint(Node root){
-        if(root==null){
-            return;
-        }
-        postPrint(root.left);
-        postPrint(root.right);
-        System.out.println(root.getC()+" "+root.getCode());
+    public boolean checkNodeInTree(Node<E> data){
+        return true;
     }
-    default void seqPrint(Node root){
-        if(root==null)return;
-        Deque<Node> queue=new ArrayDeque<>();
-        queue.addLast(root);
-        int head=0;
-        int tail=1;
-        while(head<tail){
-            if(queue.peekFirst().left!=null){
-                queue.addLast(queue.peekFirst().left);
-                tail++;
-            }
-            if(queue.peekFirst().right!=null){
-                queue.addLast(queue.peekFirst().right);
-                tail++;
-            }
-            System.out.println(queue.peekFirst().getC()+" "+queue.removeFirst().getCode());
-            head++;
-        }
-    }
-    default int searchTreeHigh(Node root){
-        if(root==null)return 0;
-        int m1=searchTreeHigh(root.left);
-        int m2=searchTreeHigh(root.right);
-        return 1+(m1>m2?m1:m2);
-    }
-    default Node searchNodeData(Node root,E data){
-        if(root==null)return null;
-        if(root.getC()==data)return root;
-        Node n1=searchNodeData(root.left,data);
-        Node n2=searchNodeData(root.right,data);
-        if(n1!=null)return n1;
-        if(n2!=null)return n2;
-        return null;
-    }
-//    default int nodeCountInSeq(Node root,int seq){
-//        if(seq>searchTreeHigh(root)){
-//            return -1;
-//        }
-//
-//    }
 }
-class Node<E> implements Comparable,Tree{
+class Node<E> implements Comparable{
 
     private E c;
     private int weight;
@@ -159,19 +249,27 @@ class Node<E> implements Comparable,Tree{
         return this.getWeight()-((Node)a).getWeight();
     }
 }
-public class Huffman implements Tree{
+public class Huffman{
     static String src1="1.txt",src2="hfm1.dat",src3="restore.txt";
     public static void main(String... args)  throws IOException{
-        Tree tree=new Huffman();
         Scanner input=new Scanner(new FileInputStream(src1));
         Map<Character,Integer> map=account(input);
-        Node root =tree.creatTree(map);
-
-        tree.setCode(root);
-        //tree.inPrint(root);
+        MyTree<Character> tree=new MyTree<>(map);
+        tree.root =tree.creatTree(map);
+        setCodeForTree(tree.root);
         Map<Character,String> map1=new HashMap<>();
-        preCode(root,map1);
+        preCode(tree.root,map1);
         printToFile(map1);
+
+//        tree.prePrint(tree.root);
+//        System.out.println(tree.isCompleteTree());
+//        System.out.println("----------------------------------------");
+//        tree.prePrint1(tree.imageForTree());
+
+
+        //tree.seqPrint(root);
+//        System.out.println("seq1 = "+tree.nodeCountInSeq(root,1));
+//        System.out.println("seq2 = "+tree.nodeCountInSeq(root,2));
         //tree.seqPrint(root);
         //testSearchNodeData(root,'p');
         //System.out.println("tree high is = "+tree.searchTreeHigh(root));
@@ -185,14 +283,6 @@ public class Huffman implements Tree{
         }catch(ClassNotFoundException e){
             e.printStackTrace();
             throw new RuntimeException(e);
-        }
-    }
-    public static void testSearchNodeData(Node root,Character data){
-        Node<Character> test=new Node<>();
-        if((test= root.searchNodeData(root,data))!=null){
-            System.out.println(String.valueOf(test.getC()));
-        }else{
-            System.out.println("data "+data+" is not fount");
         }
     }
     public static Map<Character,Integer> account(Scanner input) throws IOException{
@@ -211,6 +301,22 @@ public class Huffman implements Tree{
             }
         }
         return map;
+    }
+    public static void setCodeForTree(Node<Character> root){
+        Node p=root;
+        Deque<Node> deque=new LinkedList<>();
+        deque.offer(p);
+        while(deque.size()>0){
+            p=deque.poll();
+            if(p.left!=null){
+                p.left.setCode(p.getCode()+"0");
+                deque.offer(p.left);
+            }
+            if(p.right!=null){
+                p.right.setCode(p.getCode()+"1");
+                deque.offer(p.right);
+            }
+        }
     }
     public static void preCode(Node root,Map<Character,String> map){
         if(root==null){
