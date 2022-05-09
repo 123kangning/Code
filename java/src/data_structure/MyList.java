@@ -53,6 +53,10 @@ public interface MyList<E> extends Collection<E> {
 
   @Override
   public default boolean containsAll(Collection<?> c) {
+    for(Object e:c){
+      if(indexOf(e)==-1)
+        return false;
+    }
     return true;
   }
 
@@ -63,7 +67,6 @@ public interface MyList<E> extends Collection<E> {
     }
     return true;
   }
-
   @Override
   public default boolean removeAll(Collection<?> c) {
     for(Object e:c){
@@ -73,15 +76,14 @@ public interface MyList<E> extends Collection<E> {
     }
     return true;
   }
-
   @Override
-  public boolean retainAll(Collection<?> c);
-
+  public default boolean retainAll(Collection<?> c){
+    return false;
+  }
   @Override
   public default Object[] toArray() {
     return null;
   }
-
   @Override
   public default <T> T[] toArray(T[] array) {
     // Left as an exercise

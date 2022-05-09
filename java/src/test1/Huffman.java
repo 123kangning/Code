@@ -225,8 +225,8 @@ class Node<E> implements Comparable{
     private E c;
     private int weight;
     private String code="";
-    Node left;
-    Node right;
+    Node<E> left;
+    Node<E> right;
     public void setC(E c){
         this.c=c;
     }
@@ -260,7 +260,6 @@ public class Huffman{
         Map<Character,String> map1=new HashMap<>();
         preCode(tree.root,map1);
         printToFile(map1);
-
 //        tree.prePrint(tree.root);
 //        System.out.println(tree.isCompleteTree());
 //        System.out.println("----------------------------------------");
@@ -396,18 +395,6 @@ public class Huffman{
         BigInteger code=(BigInteger) input.readObject();
         s=s.concat(code.toString(2));
         int len=s.length();
-//        while(s.length()>0){
-//            for(int i=1;i<len/2;i++){
-//                String sub=s.substring(0,i);
-//                for(Map.Entry<Character,String> e: map.entrySet()){
-//                    if(sub.equals(e.getValue())){
-//                        output.write(e.getKey());
-//                        s=s.substring(i);
-//                        //System.out.println("s len = "+s.length());
-//                    }
-//                }
-//            }
-//        }
 
         for(int i=0;i<len;i++){
             for(int L=1;L<=len/2+1;L++){

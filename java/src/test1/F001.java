@@ -5,13 +5,15 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
 public class F001 {
 
     public static void main(String... args)throws IOException {
-        ArrayList<Integer> list=new ArrayList<>();
+        LinkedList<Integer> list=new LinkedList<>();
+        for(int i=0;i<10;i++){
+            list.add(i);
+        }
+        System.out.println(list);
     }
 }

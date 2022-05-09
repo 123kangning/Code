@@ -1,9 +1,11 @@
 package data_structure;
 
 
+import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType;
+
 import java.util.*;
 
-public  class MyArrayList<E> implements MyList<E>,Iterable<E>{
+public  class MyArrayList<E> implements MyList<E>, Iterable<E> {
     public static final int INITIAL_CAPACITY =16;
     public E[] data=(E[])new Object[INITIAL_CAPACITY];
     public int size=0;//forbid set size to static
@@ -14,6 +16,8 @@ public  class MyArrayList<E> implements MyList<E>,Iterable<E>{
         for(int i=0;i<objects.length;i++){
             add(objects[i]);
         }
+//        data=objects;
+//        size= objects.length;
     }
     public int size(){
         return size;
@@ -22,8 +26,9 @@ public  class MyArrayList<E> implements MyList<E>,Iterable<E>{
         data=(E[])new Object[INITIAL_CAPACITY];
     }
     public void add(int index,E e){
+        if(index<0||index>size)checkIndex(index);
         if(size>=data.length){
-            E[] temp=(E[])new Object[2*size];
+            E[] temp=(E[])new Object[2*size+1];
             for(int i=0;i<size;i++){
                 temp[i]=data[i];
             }
@@ -39,9 +44,7 @@ public  class MyArrayList<E> implements MyList<E>,Iterable<E>{
         throw new ArrayIndexOutOfBoundsException("Index: "+index+" size:"+size);
     }
     public E get(int index){
-        if(index<0||index>=size){
-            checkIndex(index);
-        }
+        if(index<0||index>=size)checkIndex(index);
         return data[index];
     }
     public int indexOf(Object e){
@@ -74,27 +77,9 @@ public  class MyArrayList<E> implements MyList<E>,Iterable<E>{
         data[index]=e;
         return old;
     }
-    public boolean equals(Object e){
-        if(e==this){
-            return true;
-        }
-        if(!(e instanceof MyList)){
-            return false;
-        }
-        return true;
-    }
     public boolean contains(Object e){
         return indexOf(e)>=0;
     }
-    public boolean containsAll(Collection<?> c) {
-        for(Object e:c){
-            if(!this.contains(e)){
-                return false;
-            }
-        }
-        return true;
-    }
-
     @Override
     public Iterator<E> iterator() {
         Iterator<E> iterator=new Iterator<E>() {
@@ -111,7 +96,6 @@ public  class MyArrayList<E> implements MyList<E>,Iterable<E>{
         };
         return iterator;
     }
-
     public boolean retainAll(Collection<?> c){
         boolean sign=true;
         for(int i=0;;i++){
@@ -120,6 +104,7 @@ public  class MyArrayList<E> implements MyList<E>,Iterable<E>{
             }
             if(!c.contains(data[i])){
                 remove(data[i]);
+                i--;
                 sign=false;
             }
         }
@@ -131,13 +116,14 @@ public  class MyArrayList<E> implements MyList<E>,Iterable<E>{
         }
         return array;
     }
-    public <T> T[] toArray(T[] array){
-        if(array.length<=size){
+    public <T> T[] toArray(T[] array) {
+        if(size> array.length){
             array=(T[])new Object[size];
         }
         for(int i=0;i<size;i++){
-            array[i]=(T)data[i];
+            array[i]= (T) data[i];
         }
+//        System.out.println(array[0]);
         return array;
     }
     public String toString(){
@@ -152,4 +138,18 @@ public  class MyArrayList<E> implements MyList<E>,Iterable<E>{
             }
         }
     }
+    public void trimToSize(){
+        E[] num=(E[])new Object[size];
+         for(int i=0;i<size;i++){
+            num[i]=data[i];
+         }
+         data=num;
+    }
+//    public void sort(){
+//        Arrays.sort(data,new Comparator<E>(){
+//            public int compare(E o1,E o2){
+//                return
+//            }
+//        });
+//    }
 }
