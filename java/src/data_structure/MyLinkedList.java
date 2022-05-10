@@ -129,18 +129,16 @@ public  class MyLinkedList<E> implements MyList<E>{
     @Override
     public Iterator<E> iterator() {
         Iterator<E> iterator=new Iterator<E>() {
-            int current = 0;
-            Node<E> currentNode = head;
+            Node<E> current = head;
 
             public boolean hasNext() {
-                return current < size;
+                return current != null;
             }
 
             public E next() {
-                Node<E> ans=currentNode;
-                current++;
-                currentNode=currentNode.next;
-                return ans.element;
+                E ans= current.element;;
+                current=current.next;
+                return ans;
             }
         };
         return iterator;
@@ -157,7 +155,7 @@ public  class MyLinkedList<E> implements MyList<E>{
         Node<E> p1=head;
         int index=0;
         while(p1!=null){
-            if(p1.equals(e)){
+            if(p1.element.equals(e)){
                 return index;
             }
             index++;
