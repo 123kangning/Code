@@ -22,7 +22,7 @@ interface Tree<E>{
     Node imageForTree();
 
     boolean checkNodeInTree(Node<E> data);
-    boolean isCompleteTree(Node<E> root);
+
 }
 class  MyTree<E> implements Tree<E>{
     Node<E> root=new Node<>();
@@ -310,7 +310,6 @@ public class Huffman{
     static String src1="1.txt",src2="hfm1.dat",src3="restore.txt";
     public static void main(String... args)  throws IOException{
         checkExist(args);
-
         Map<Character,Integer> map=account();
         MyTree<Character> tree=new MyTree<>(map);
         tree.root =tree.creatTree(map);
@@ -318,10 +317,6 @@ public class Huffman{
         Map<Character,String> map1=new HashMap<>();
         preCode(tree.root,map1);
         printToFile(map1);
-
-        for(Map.Entry<Character,String> e:map1.entrySet()){
-            System.out.println(e.getKey()+" "+e.getValue());
-        }
 
         try{
             restoreTree(map1);

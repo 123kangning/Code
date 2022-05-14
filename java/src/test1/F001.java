@@ -10,10 +10,19 @@ import java.util.*;
 public class F001 {
 
     public static void main(String... args)throws IOException {
-        LinkedList<Integer> list=new LinkedList<>();
-        for(int i=0;i<10;i++){
-            list.add(i);
-        }
-        System.out.println(list);
+        String a="ABCDEFGHIJK";
+        int hashCode=hashCodeForString(a);
+        System.out.println("hashCode = "+hashCode);
     }
+    public static int hashCodeForString(String a){
+        int b=31;
+        int hashCode=a.charAt(0);
+        for(Character e:a.substring(1).toCharArray()){
+            hashCode*=b;
+            hashCode+=e;
+
+        }
+        return hashCode;
+    }
+
 }

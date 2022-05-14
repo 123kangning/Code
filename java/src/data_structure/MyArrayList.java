@@ -5,7 +5,7 @@ import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType;
 
 import java.util.*;
 
-public  class MyArrayList<E> implements MyList<E>, Iterable<E> {
+public  class MyArrayList<E> implements MyList<E> {
     public static final int INITIAL_CAPACITY =16;
     public E[] data=(E[])new Object[INITIAL_CAPACITY];
     public int size=0;//forbid set size to static
@@ -82,7 +82,7 @@ public  class MyArrayList<E> implements MyList<E>, Iterable<E> {
     }
     @Override
     public Iterator<E> iterator() {
-        Iterator<E> iterator=new Iterator<E>() {
+        return new Iterator<E>() {
             int current=0;
             @Override
             public boolean hasNext() {
@@ -94,7 +94,6 @@ public  class MyArrayList<E> implements MyList<E>, Iterable<E> {
                 return data[current++];
             }
         };
-        return iterator;
     }
     public boolean retainAll(Collection<?> c){
         boolean sign=true;
