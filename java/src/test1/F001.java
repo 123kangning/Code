@@ -1,28 +1,13 @@
 package test1;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class F001 {
-
-    public static void main(String... args)throws IOException {
-        String a="ABCDEFGHIJK";
-        int hashCode=hashCodeForString(a);
-        System.out.println("hashCode = "+hashCode);
+    public static void main(String... args) throws IOException {
+        double[] nums={3,2,1};
+        System.out.println(Arrays.stream(nums).reduce((e1,e2)-> Math.pow(e1,e2)).getAsDouble());
+        System.out.println(Arrays.stream(nums).reduce((e1,e2)-> Math.pow(e1,e2)).isPresent());
+        System.out.println(Arrays.stream(nums).reduce(2,(e1,e2)-> Math.pow(e1,e2)));
     }
-    public static int hashCodeForString(String a){
-        int b=31;
-        int hashCode=a.charAt(0);
-        for(Character e:a.substring(1).toCharArray()){
-            hashCode*=b;
-            hashCode+=e;
-
-        }
-        return hashCode;
-    }
-
 }

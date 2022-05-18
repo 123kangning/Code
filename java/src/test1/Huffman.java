@@ -310,7 +310,6 @@ public class Huffman{
     static String src1="1.txt",src2="hfm1.dat",src3="restore.txt";
     public static void main(String... args)  throws IOException{
         checkExist(args);
-
         Map<Character,Integer> map=account();
         MyTree<Character> tree=new MyTree<>(map);
         tree.root =tree.creatTree(map);
