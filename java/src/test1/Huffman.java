@@ -3,7 +3,6 @@ package test1;
 import java.io.*;
 import java.math.BigInteger;
 import java.util.*;
-import java.util.stream.Stream;
 
 interface Tree<E> {
     int nodeCount();
@@ -369,25 +368,15 @@ public class Huffman {
         Scanner input = new Scanner(System.in);
         int sign = input.nextInt();
         input.close();
-        long startTime = System.currentTimeMillis(), endTime;
+//        long startTime = System.currentTimeMillis(), endTime;
         if (sign == 1) {
             Map<Character, Integer> map = account();
-            endTime = System.currentTimeMillis();
-            System.out.println("1 spend time is " + (endTime - startTime));
             MyTree<Character> tree = new MyTree<>(map);
-            endTime = System.currentTimeMillis();
-            System.out.println("2 spend time is " + (endTime - startTime));
             tree.root = tree.creatTree(map);
-            endTime = System.currentTimeMillis();
-            System.out.println("3 spend time is " + (endTime - startTime));
             setCodeForTree(tree.root);
             Map<Character, String> map1 = new HashMap<>();
             preCode(tree.root, map1);
-            endTime = System.currentTimeMillis();
-            System.out.println("4 spend time is " + (endTime - startTime));
             printToFile(map1);
-            endTime = System.currentTimeMillis();
-            System.out.println("5 spend time is " + (endTime - startTime));
         } else {
             try {
                 restoreTree();
@@ -396,8 +385,9 @@ public class Huffman {
                 throw new RuntimeException(e);
             }
         }
-        endTime = System.currentTimeMillis();
-        System.out.println("spend time is " + (endTime - startTime));
+//        endTime = System.currentTimeMillis();
+//        System.out.println("spend time is " + (endTime - startTime));
+
 //        for (Map.Entry<Character, String> e : map1.entrySet()) {
 //            System.out.println(e.getKey() + " " + e.getValue());
 //        }
@@ -501,29 +491,19 @@ public class Huffman {
     }
 
     public static void printToFile(Map<Character, String> map) throws IOException {
-        Scanner input = new Scanner(new BufferedInputStream(new FileInputStream(src1)));
-        ObjectOutputStream output = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(src2)));
-
-        long time1 = System.currentTimeMillis(), time2;
-        time2 = System.currentTimeMillis();
-        System.out.println("000 spend time is " + (time2 - time1));
+        Scanner input = new Scanner(new FileInputStream(src1));
+        ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(src2));
 
         String numCode = "";
         while (input.hasNext()) {
             String s = input.nextLine();
-            s = input.hasNext() ? s.concat("\n") : s;
-//            if (input.hasNext()) {
-//                s = s.concat("\n");
-//            }
-//            for (char e : s.toCharArray()) {
-//                numCode = numCode.concat(map.get(e));
-//            }
-            numCode= Stream.of(numCode).
+            if (input.hasNext()) {
+                s = s.concat("\n");
+            }
+            for (char e : s.toCharArray()) {
+                numCode = numCode.concat(map.get(e));
+            }
         }
-
-        time2 = System.currentTimeMillis();
-        System.out.println("001 spend time is " + (time2 - time1));
-
         int i = 0, count = 0;
         while (numCode.charAt(i++) == '0') {
             count++;
@@ -531,10 +511,6 @@ public class Huffman {
         output.write(count);
 
         output.writeObject(map);
-
-        time2 = System.currentTimeMillis();
-        System.out.println("002 spend time is " + (time2 - time1));
-
         BigInteger code = new BigInteger(numCode);
 //        for (char e : numCode.toCharArray()) {
 //            if (e == '0') {
@@ -544,22 +520,14 @@ public class Huffman {
 //            }
 //            code = code.shiftLeft(1);
 //        }
-
-        time2 = System.currentTimeMillis();
-        System.out.println("003 spend time is " + (time2 - time1));
-
 //        code = code.shiftRight(1);
         output.writeObject(code);
-
-
         output.close();
-        time2 = System.currentTimeMillis();
-        System.out.println("004 spend time is " + (time2 - time1));
     }
 
     public static void restoreTree() throws IOException, ClassNotFoundException {
-        Map<Character, String> map1 = new TreeMap<>();
-        ObjectInputStream input = new ObjectInputStream(new BufferedInputStream(new FileInputStream(src1)));
+        Map<Character, String> map1 = new HashMap<>();
+        ObjectInputStream input = new ObjectInputStream(new FileInputStream(src1));
 
         int count = input.read();
         String s = "";
@@ -572,7 +540,7 @@ public class Huffman {
 
         FileOutputStream output = new FileOutputStream(src2);
         BigInteger code = (BigInteger) input.readObject();
-        s = s.concat(code.toString(2));
+        s = s.concat(code.toString());
         int len = s.length();
 
         for (int i = 0; i < len; i++) {
