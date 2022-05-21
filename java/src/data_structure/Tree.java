@@ -3,90 +3,88 @@ package data_structure;
 import java.util.Collection;
 
 public interface Tree<E> extends Collection<E> {
-  /** Return true if the element is in the tree */
-  public boolean search(E e);
 
-  /** Insert element e into the binary tree
-   * Return true if the element is inserted successfully */
-  public boolean insert(E e);
+    boolean search(E e);
 
-  /** Delete the specified element from the tree
-   * Return true if the element is deleted successfully */
-  public boolean delete(E e);
-  
-  /** Get the number of elements in the tree */
-  public int getSize();
-  
-  /** Inorder traversal from the root*/
-  public default void inorder() {
-  }
+    boolean insert(E e);
 
-  /** Postorder traversal from the root */
-  public default void postorder() {
-  }
+    boolean delete(E e);
 
-  /** Preorder traversal from the root */
-  public default void preorder() {
-  }
-  
-  @Override /** Return true if the tree is empty */
-  public default boolean isEmpty() {
-    return this.size() == 0;
-  }
+    int getSize();
 
-  @Override
-  public default boolean contains(Object e) {
-    return search((E)e);
-  }
-  
-  @Override
-  public default boolean add(E e) {
-    return insert(e);
-  }
-  
-  @Override
-  public default boolean remove(Object e) {
-    return delete((E)e);
-  }
-  
-  @Override
-  public default int size() {
-    return getSize();
-  }
-  
-  @Override
-  public default boolean containsAll(Collection<?> c) {
-    // Left as an exercise
-    return false;
-  }
+//    default E clone() {
+//        return null;
+//    }
 
-  @Override
-  public default boolean addAll(Collection<? extends E> c) {
-    // Left as an exercise
-    return false;
-  }
+    default E image() {
+        return null;
+    }
 
-  @Override
-  public default boolean removeAll(Collection<?> c) {
-    // Left as an exercise
-    return false;
-  }
+    default boolean isCompleteTree() {
+        return false;
+    }
 
-  @Override
-  public default boolean retainAll(Collection<?> c) {
-    // Left as an exercise
-    return false;
-  }
+    int getHigh();
 
-  @Override
-  public default Object[] toArray() {
-    // Left as an exercise
-    return null;
-  }
+    default void inorder() {
+    }
 
-  @Override
-  public default <T> T[] toArray(T[] array) {
-    // Left as an exercise
-    return null;
-  }
+    default void postorder() {
+    }
+
+    default void preorder() {
+    }
+
+    default void seqPrint() {
+    }
+
+    default boolean isEmpty() {
+        return this.size() == 0;
+    }
+
+    default boolean contains(Object e) {
+        return search((E) e);
+    }
+
+    default boolean add(E e) {
+        return insert(e);
+    }
+
+    default boolean remove(Object e) {
+        return delete((E) e);
+    }
+
+    default int size() {
+        return getSize();
+    }
+
+    default boolean containsAll(Collection<?> c) {
+        // Left as an exercise
+        return false;
+    }
+
+    default boolean addAll(Collection<? extends E> c) {
+        // Left as an exercise
+        return false;
+    }
+
+    default boolean removeAll(Collection<?> c) {
+        // Left as an exercise
+        return false;
+    }
+
+    default boolean retainAll(Collection<?> c) {
+        // Left as an exercise
+        return false;
+    }
+
+    default Object[] toArray() {
+        // Left as an exercise
+        return null;
+    }
+
+    default <T> T[] toArray(T[] array) {
+        // Left as an exercise
+        return null;
+    }
 }

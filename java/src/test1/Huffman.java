@@ -55,7 +55,6 @@ class MyTree<E> implements Tree<E> {
         if (root == null) return true;
         if (getHigh(root.left) < getHigh(root.right)) return false;
         return isCompleteTree(root.left) && isCompleteTree(root.right);
-
     }
 
     public int nodeCount() {
@@ -182,7 +181,7 @@ class MyTree<E> implements Tree<E> {
 
     public void seqPrint(Node<E> root) {
         if (root == null) return;
-        Deque<Node> queue = new ArrayDeque<>();
+        Deque<Node<E>> queue = new ArrayDeque<>();
         queue.addLast(root);
         int head = 0;
         int tail = 1;
