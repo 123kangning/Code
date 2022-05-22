@@ -1,35 +1,31 @@
 #include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <sys/wait.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <sys/mman.h>
-#include <sys/utsname.h>
-#include <fcntl.h>
-#include <string.h>
-#include <math.h>
-
-int judje(long long num){
-    if(num==1)return 0;
-    if(num==2)return 1;
-    for(int j=2;j<sqrt(num);j++){
-        if(num%j==0)return 0;
-    }
-    return 1;
-}
 
 int main(void)
 {
-    long long m;
-    long long i=0;
-    scanf("%lld",&m);
-    for(i=1;i<10000;i+=2){
-        if(judje(i)&&judje(m-i)){
-            printf("%lld = %lld + %lld",m,i,m-i);
-            return 0;
+    int c=0;
+    int sign[1000]={0};
+    int prime[1000]={0};
+    while(c<1000){
+        printf("1");
+        if(sign[c]){
+            c++;
+            continue;
         }
+        for(int i=2;i<c;i++){
+            if(c%i==0){
+                sign[c]=1;
+            }
+        }
+        if(sign[c]==0){
+            for(int i=c;i<1000;i+=c){
+                sign[i]=1;
+            }
+            sign[c]=0;
+        }
+        c++;
     }
-
+    for(int i=0;i<1000;i++){
+        if(sign[i]==0)printf("%d ",i);
+    }
     return 0;
 }

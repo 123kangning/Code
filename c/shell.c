@@ -330,7 +330,6 @@ void mywait(pid_t pid, int *status, int options)
 void piexec(char **cmd, int *p, int pipesize)
 {
     char subcmd[10][50]={};
-    char subcmd[10][50];
     int start = 0, i = 0, status;
     pid_t ppid;
 

@@ -1,8 +1,0 @@
-<<<<<<< HEAD
--rwxrwxr-x 1 kangning kangning 22504 4月  15 15:40 shell
--rw-rw-r-- 1 kangning kangning 12851 4月  10 21:55 shell1.c
--rw-rw-r-- 1 kangning kangning  7574 4月  15 17:10 shell2.c
--rw-rw-r-- 1 kangning kangning 12142 4月  16 09:35 shell.c
--rw-rw-r-- 1 kangning kangning 23872 4月  15 16:35 shell.o
-=======
->>>>>>> origin/master
