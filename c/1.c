@@ -1,31 +1,31 @@
 #include <stdio.h>
+struct kkkk
+{
+    char name[10];
+    double basickkkk;
+    double floatkkkk;
+    double pay;
+    double realkkkk;
+};
 
 int main(void)
 {
-    int c=0;
-    int sign[1000]={0};
-    int prime[1000]={0};
-    while(c<1000){
-        printf("1");
-        if(sign[c]){
-            c++;
-            continue;
-        }
-        for(int i=2;i<c;i++){
-            if(c%i==0){
-                sign[c]=1;
-            }
-        }
-        if(sign[c]==0){
-            for(int i=c;i<1000;i+=c){
-                sign[i]=1;
-            }
-            sign[c]=0;
-        }
-        c++;
+    int n;
+    scanf("%d", &n);
+    struct kkkk kkkks[n];
+    int i;
+    for (i = 0; i < n; i++)
+    {
+        scanf("%s", &kkkks[i].name);
+        scanf("%lf", &kkkks[i].basickkkk);
+        scanf("%lf", &kkkks[i].floatkkkk);
+        scanf("%lf", &kkkks[i].pay);
+        kkkks[i].realkkkk = kkkks[i].basickkkk + kkkks[i].floatkkkk - kkkks[i].pay;
     }
-    for(int i=0;i<1000;i++){
-        if(sign[i]==0)printf("%d ",i);
+
+    for (i = 0; i < n; i++)
+    {
+        printf("%s %.2f\n", kkkks[i].name, kkkks[i].realkkkk);
     }
     return 0;
 }

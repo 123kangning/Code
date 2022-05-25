@@ -9,62 +9,84 @@ have bugs ,the producer thread don't block
 #include <string.h>
 #include <stdlib.h>
 
-int globe = 1000000;
+#define BQ_SIZE 10
+
+typedef struct BlockingQueue
+{
+    int start;
+    int end;
+    int *Queue;
+} BQ;
+
+BQ *ps;
+
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 
-int array[5], avail;
-void *func(void *arg)
+pthread_cond_t cond1 = PTHREAD_COND_INITIALIZER;
+
+void errExit(int ret, char *ans)
 {
-    // printf("start safe\n");
-    int end = 100;
-    int loc, i, sign = (int)arg;
+    if (ret != 0)
+    {
+        fprintf(stderr, "%s error:%s", ans, strerror(ret));
+    }
+}
+
+void *producer(void *arg)
+{
+    // BQ *ps = (BQ *)arg;
+
     int ret;
     while (1)
     {
+        // printf("start = %d , end = %d \n", ps->start, ps->end);
+        //  printf("producer\n");
         ret = pthread_mutex_lock(&mutex);
         if (ret != 0)
         {
             fprintf(stderr, "pthread_mutex_lock error:%s", strerror(ret));
             exit(1);
         }
-        array[avail++] = rand() % 10;
-        printf("make array.element %d \n", array[avail - 1]);
+        while (((ps->end + 1 + BQ_SIZE) % BQ_SIZE == ps->start))
+        {
+            pthread_cond_wait(&cond1, &mutex);
+        }
+
+        ps->Queue[(ps->end + 1 + BQ_SIZE) % BQ_SIZE] = rand() % 100;
+        printf("make a number %d \n", ps->Queue[ps->end]);
+        ps->end = (ps->end + 1 + BQ_SIZE) % BQ_SIZE;
+
         ret = pthread_mutex_unlock(&mutex);
         if (ret != 0)
         {
             fprintf(stderr, "pthread_mutex_unlock error:%s", strerror(ret));
         }
-        // sleep(1);
+
         ret = pthread_cond_signal(&cond);
         if (ret != 0)
         {
             fprintf(stderr, "pthread_cond_signal error:%s", strerror(ret));
         }
+        // sleep(1);
     }
 
     return NULL;
 }
-
-int main(void)
+void *consumer(void *arg)
 {
-    pthread_t tid;
-    int ret, end = 1000000;
-    ret = pthread_create(&tid, NULL, func, NULL);
-    if (ret != 0)
-    {
-        fprintf(stderr, "pthread_create error:%s\n", strerror(ret));
-    }
+
     while (1)
     {
-        ret = pthread_mutex_lock(&mutex);
+        // printf("consumer\n");
+        int ret = pthread_mutex_lock(&mutex);
         if (ret != 0)
         {
             fprintf(stderr, "pthread_mutex_lock error:%s", strerror(ret));
             exit(1);
         }
-        while (avail == 0)
+        while (ps->start == ps->end)
         {
             ret = pthread_cond_wait(&cond, &mutex);
             if (ret != 0)
@@ -73,11 +95,48 @@ int main(void)
                 exit(1);
             }
         }
-        while (avail > 0)
+        while (ps->start != ps->end)
         {
-            printf("eat array.element %d \n", array[--avail]);
+            printf("eat a number %d \n", ps->Queue[ps->start]);
+            ps->start = (ps->start + 1 + BQ_SIZE) % BQ_SIZE;
         }
         pthread_mutex_unlock(&mutex);
+        errExit(ret, "pthread_mutex_unlock");
+        pthread_cond_signal(&cond1);
+        errExit(ret, "pthread_cond_signal");
+    }
+    return NULL;
+}
+
+int main(void)
+{
+    // printf("start\n");
+    pthread_t tid1, tid2;
+    int ret;
+    ps = (BQ *)malloc(sizeof(BQ));
+    ps->start = ps->end = 0;
+    ps->Queue = (int *)malloc(sizeof(int) * BQ_SIZE);
+
+    ret = pthread_create(&tid1, NULL, consumer, NULL);
+    if (ret != 0)
+    {
+        fprintf(stderr, "pthread_create error:%s\n", strerror(ret));
+    }
+    // printf("-------------\n");
+    ret = pthread_create(&tid2, NULL, producer, NULL);
+    if (ret != 0)
+    {
+        fprintf(stderr, "pthread_create error:%s\n", strerror(ret));
+    }
+    ret = pthread_join(tid1, NULL);
+    if (ret != 0)
+    {
+        fprintf(stderr, "pthread_join error  ");
+    }
+    ret = pthread_join(tid2, NULL);
+    if (ret != 0)
+    {
+        fprintf(stderr, "pthread_join error  ");
     }
     return 0;
 }
