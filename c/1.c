@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 struct kkkk
 {
     char name[10];
@@ -10,22 +11,7 @@ struct kkkk
 
 int main(void)
 {
-    int n;
-    scanf("%d", &n);
-    struct kkkk kkkks[n];
-    int i;
-    for (i = 0; i < n; i++)
-    {
-        scanf("%s", &kkkks[i].name);
-        scanf("%lf", &kkkks[i].basickkkk);
-        scanf("%lf", &kkkks[i].floatkkkk);
-        scanf("%lf", &kkkks[i].pay);
-        kkkks[i].realkkkk = kkkks[i].basickkkk + kkkks[i].floatkkkk - kkkks[i].pay;
-    }
-
-    for (i = 0; i < n; i++)
-    {
-        printf("%s %.2f\n", kkkks[i].name, kkkks[i].realkkkk);
-    }
+    int *a = (int *)malloc(sizeof(int) * 10);
+    printf("%ld", sizeof(a));
     return 0;
 }
