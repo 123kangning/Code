@@ -8,7 +8,7 @@ typedef struct student
     char name[20];
     int score;
 } st;
-int size = 0;
+int size = 0; // the size of st Arrays
 
 void sort(st *num, int start, int end);
 void swap(st *num, int i, int j);
