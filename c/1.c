@@ -1,17 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-struct kkkk
-{
-    char name[10];
-    double basickkkk;
-    double floatkkkk;
-    double pay;
-    double realkkkk;
-};
+#include <string.h>
 
 int main(void)
 {
-    int *a = (int *)malloc(sizeof(int) * 10);
-    printf("%ld", sizeof(a));
+    printf("%c", 67);
     return 0;
 }
