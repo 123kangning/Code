@@ -25,10 +25,13 @@ int main(void)
 {
     int n = size;
     FILE *f = fopen("/tmp/2.dat", "r+");
-    st *input = (st *)malloc(sizeof(st) * n);
-    int r = fread(input, sizeof(st), n, f);
-    printf("read = %d\n", r);
-    printf("\n-------------------------------------\n");
-    print((st *)input);
+    // st *input = (st *)malloc(sizeof(st) * n);
+    // int r = fread(input, sizeof(st), n, f);
+    // printf("read = %d\n", r);
+    // printf("\n-------------------------------------\n");
+    // print((st *)input);
+    char a = 0;
+    fread(&a, sizeof(char), 1, f);
+    printf("a = %d\n", a);
     return 0;
 }

@@ -5,6 +5,7 @@
 int main(void)
 {
     FILE *f = fopen("/tmp/1.txt", "r");
+    fseek(f, -1, SEEK_END);
     char *buf = (char *)malloc(sizeof(char) * 100);
     while (fgets(buf, 100, f) != NULL)
     {
