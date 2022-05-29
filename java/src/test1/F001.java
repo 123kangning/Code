@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class F001 {
     public static void main(String... args) throws IOException {
-        int[] a = new int[]{1, 2, 3, 4, 5};
-        System.out.println();
+
+        System.out.println(Integer.decode("0x" + "122a"));
     }
 }
