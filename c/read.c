@@ -5,11 +5,9 @@
 int main(void)
 {
     FILE *f = fopen("/tmp/1.txt", "r");
-    fseek(f, -1, SEEK_END);
-    char *buf = (char *)malloc(sizeof(char) * 100);
+    char *buf = (char *)malloc(sizeof(char) * 1000);
     while (fgets(buf, 100, f) != NULL)
     {
-        // buf[strlen(buf) - 1] = '\0';
         printf("%s", buf);
     }
     return 0;

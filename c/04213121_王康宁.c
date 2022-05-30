@@ -4,7 +4,7 @@
 
 typedef struct student
 {
-    int id;
+    char id[20];
     char name[20];
     int score;
 } st;
@@ -28,7 +28,7 @@ int main(void)
     size = n;
     for (int i = 0; i < n; i++)
     {
-        scanf("%d%s%d", &num[i].id, num[i].name, &num[i].score);
+        scanf("%s%s%d", num[i].id, num[i].name, &num[i].score);
     }
     char c;
     while (1)
@@ -89,9 +89,9 @@ void swap(st *num, int i, int j)
 {
     char temp[20];
     int temp1;
-    temp1 = num[i].id;
-    num[i].id = num[j].id;
-    num[j].id = temp1;
+    strcpy(temp, num[i].id);
+    strcpy(num[i].id, num[j].id);
+    strcpy(num[j].id, temp);
     temp1 = num[i].score;
     num[i].score = num[j].score;
     num[j].score = temp1;
@@ -108,38 +108,40 @@ void print(st *num)
             printf("---------------------------------------------\n");
             printf("|  %-8s  | %-18s   | %-3s |\n", "id", "name", "score");
         }
-        printf("|  %-10d|  %-20s| %-5d |\n", num[i].id, num[i].name, num[i].score);
+        printf("|  %-10s|  %-20s| %-5d |\n", num[i].id, num[i].name, num[i].score);
     }
 }
 void search(st *num)
 {
-    int id, sign = 1;
+    char id[20] = "\0";
+    int sign = 1;
     printf("Input the id \n");
-    scanf("%d", &id);
+    scanf("%s", id);
     for (int i = 0; i < size; i++)
     {
-        if (id == num[i].id)
+        if (strcmp(id, num[i].id) == 0)
         {
             sign = 0;
             printf("---------------------------------------------\n");
             printf("|  %-8s  | %-18s   | %-3s |\n", "id", "name", "score");
-            printf("|  %-10d| %-20s | %-5d |\n", num[i].id, num[i].name, num[i].score);
+            printf("|  %-10s| %-20s | %-5d |\n", num[i].id, num[i].name, num[i].score);
             break;
         }
     }
     if (sign)
     {
-        printf("The student %d don't exist\n", id);
+        printf("The student %s don't exist\n", id);
     }
 }
 int del(st *num)
 {
-    int i, id;
+    int i;
+    char id[20] = "\0";
     printf("Input the id \n");
-    scanf("%d", &id);
+    scanf("%s", id);
     for (i = 0; i < size; i++)
     {
-        if (id == num[i].id)
+        if (strcmp(id, num[i].id) == 0)
         {
             break;
         }
@@ -158,15 +160,16 @@ int del(st *num)
 void insert(st *num)
 {
 
-    int index, id, score;
+    int index, score;
     char name[20] = "\0";
+    char id[20] = "\0";
     printf("Input index between 0 ~ %d\n", size);
     scanf("%d", &index);
     printf("Input the id name score\n");
-    scanf("%d %s %d", &id, name, &score);
+    scanf("%s %s %d", id, name, &score);
     for (int i = 0; i < size; i++)
     {
-        if (num[i].id == id)
+        if (strcmp(num[i].id, id) == 0)
         {
             printf("this id exist already\n");
             return;
@@ -177,7 +180,7 @@ void insert(st *num)
     {
         num[i + 1] = num[i];
     }
-    num[index].id = id;
+    strcpy(num[index].id, id);
     strcpy(num[index].name, name);
     num[index].score = score;
 }
@@ -193,7 +196,7 @@ void statistics(st *num)
     {
         count++;
 
-        printf("|  %-10d|  %-20s| %-5d |\n", num[i].id, num[i].name, num[i].score);
+        printf("|  %-10s|  %-20s| %-5d |\n", num[i].id, num[i].name, num[i].score);
         i--;
     }
     if (count == 0)
@@ -204,7 +207,7 @@ void statistics(st *num)
     {
         count++;
 
-        printf("|  %-10d|  %-20s| %-5d |\n", num[i].id, num[i].name, num[i].score);
+        printf("|  %-10s|  %-20s| %-5d |\n", num[i].id, num[i].name, num[i].score);
         i--;
     }
     if (count == 0)
@@ -215,7 +218,7 @@ void statistics(st *num)
     {
         count++;
 
-        printf("|  %-10d|  %-20s| %-5d |\n", num[i].id, num[i].name, num[i].score);
+        printf("|  %-10s|  %-20s| %-5d |\n", num[i].id, num[i].name, num[i].score);
         i--;
     }
     if (count == 0)
@@ -226,7 +229,7 @@ void statistics(st *num)
     {
         count++;
 
-        printf("|  %-10d|  %-20s| %-5d |\n", num[i].id, num[i].name, num[i].score);
+        printf("|  %-10s|  %-20s| %-5d |\n", num[i].id, num[i].name, num[i].score);
         i--;
     }
     if (count == 0)
@@ -238,7 +241,7 @@ void statistics(st *num)
     {
         count++;
 
-        printf("|  %-10d|  %-20s| %-5d |\n", num[i].id, num[i].name, num[i].score);
+        printf("|  %-10s|  %-20s| %-5d |\n", num[i].id, num[i].name, num[i].score);
         i--;
     }
     if (count == 0)
@@ -249,7 +252,7 @@ void statistics(st *num)
     {
         count++;
 
-        printf("|  %-10d|  %-20s| %-5d |\n", num[i].id, num[i].name, num[i].score);
+        printf("|  %-10s|  %-20s| %-5d |\n", num[i].id, num[i].name, num[i].score);
         i--;
     }
     if (count == 0)

@@ -25,27 +25,11 @@ void print(st *num)
 }
 int main(void)
 {
-    int n = size;
+    int n = size = 3;
     FILE *f = fopen("/tmp/2.dat", "r+");
     st *input = (st *)malloc(sizeof(st) * n);
-    // int r = fread(input, sizeof(st), n, f);
-    // printf("read = %d\n", r);
-
-    int oldid = 1;
-    st newdata = {041213121, "kangning", 100};
-    while (1)
-    {
-        if (fread(input, sizeof(st), 1, f) < 1)
-            break;
-        if (oldid == input->id)
-        {
-            fpos_t pos;
-            fgetpos(f, &pos);
-            fseek(f, -sizeof(st), SEEK_CUR);
-            fwrite(&newdata, sizeof(st), 1, f);
-            fsetpos(f, &pos);
-        }
-    }
+    fread(input, sizeof(st), n, f);
     print(input);
+
     return 0;
 }
