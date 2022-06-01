@@ -1,15 +1,13 @@
 package thread;//: concurrency/OrnamentalGarden.java
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 
 class Count {
-    private int count = 0;
+    private int count = 0;//通过的总人数
     private Random rand = new Random(47);
 
     // Remove the synchronized keyword to see counting fail:
@@ -28,11 +26,11 @@ class Count {
 class Entrance implements Runnable {
     private static Count count = new Count();
     private static List<Entrance> entrances =
-            new ArrayList<Entrance>();
+            new ArrayList<>();
     private static volatile boolean canceled = false;
     // Doesn't need synchronization to read:
     private final int id;
-    private int number = 0;
+    private int number = 0;//每个门单独通过的人数
 
     public Entrance(int id) {
         this.id = id;
@@ -62,6 +60,12 @@ class Entrance implements Runnable {
             synchronized (this) {
                 ++number;
             }
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    Entrance.cancel();
+                }
+            }, 3000);
             System.out.println(this + " Total: " + count.increment());
             try {
                 TimeUnit.MILLISECONDS.sleep(100);
@@ -87,7 +91,7 @@ public class OrnamentalGarden {
         for (int i = 0; i < 5; i++)
             exec.execute(new Entrance(i));
         // Run for a while, then stop and collect the data:
-        TimeUnit.SECONDS.sleep(3);
+        TimeUnit.SECONDS.sleep(5);
         Entrance.cancel();
         exec.shutdown();
         if (!exec.awaitTermination(250, TimeUnit.MILLISECONDS))
