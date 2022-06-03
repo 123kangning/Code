@@ -1,16 +1,10 @@
-package thread;
+package project;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-interface MyBlockingQueue<E> {
-    void add(E e);
-
-    E take();
-}
-
-class MyArrayBlockingQueue<E> {
+public class MyArrayBlockingQueue<E> implements MyBlockingQueue<E> {
     private int len = Integer.MAX_VALUE;
     private int start = 0, end = 0;
     private Object[] meal;
@@ -27,7 +21,7 @@ class MyArrayBlockingQueue<E> {
         meal = new Object[len];
     }
 
-    public void add(E e) {
+    public void put(E e) {
         try {
             lockAdd.lock();
             while ((end + 1) % len == start) {
@@ -62,4 +56,11 @@ class MyArrayBlockingQueue<E> {
         lockAdd.unlock();
         return ans;
     }
+
+    public boolean isFull() {
+        return start == end;
+    }
+//    public void print() {
+//        System.out.println("start = " + start + " end = " + end);
+//    }
 }

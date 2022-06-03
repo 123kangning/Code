@@ -1,6 +1,8 @@
 package thread;//: concurrency/Restaurant.java
 // The producer-consumer approach to task cooperation.
 
+import project.MyArrayBlockingQueue;
+
 import java.util.Random;
 import java.util.concurrent.*;
 
@@ -37,7 +39,7 @@ class Chef implements Runnable {
         try {
             while (!Thread.interrupted()) {
                 int ans = rand.nextInt(100);
-                block.add(ans);
+                block.put(ans);
                 System.out.println("make " + ans);
                 TimeUnit.MILLISECONDS.sleep(1);
             }
