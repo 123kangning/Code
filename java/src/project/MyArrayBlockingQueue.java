@@ -1,5 +1,6 @@
 package project;
 
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -56,6 +57,25 @@ public class MyArrayBlockingQueue<E> implements MyBlockingQueue<E> {
         return ans;
     }
 
+    public E poll(long time, TimeUnit unit) {
+        time = unit.toNanos(time);
+        lockAdd.lock();
+        try {
+            while (isEmpty()) {
+                if (time <= 0) {
+                    return null;
+                }
+                time = notEmpty.awaitNanos(time);
+            }
+            return take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            lockAdd.unlock();
+        }
+        return null;
+    }
+
     public synchronized boolean offer(E e) {
         if ((end + 1) % len == start) {
             return false;
@@ -72,8 +92,12 @@ public class MyArrayBlockingQueue<E> implements MyBlockingQueue<E> {
     }
 
 
-    public boolean isFull() {
+    public boolean isEmpty() {
         return start == end;
+    }
+
+    public boolean isFull() {
+        return (end + 1) % len == start;
     }
 
 }
