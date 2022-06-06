@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "print_wait_status.h": "c",
+        "tlpi_hdr.h": "c",
+        "get_num.h": "c",
+        "error_functions.h": "c",
+        "stat.h": "c"
+    }
+}

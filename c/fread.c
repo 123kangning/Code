@@ -32,20 +32,21 @@ int main(void)
     // printf("read = %d\n", r);
 
     int oldid = 1;
-    st newdata = {041213121, "kangning", 100};
+    st newdata = {13121, "kangning", 100};
     while (1)
     {
         if (fread(input, sizeof(st), 1, f) < 1)
             break;
         if (oldid == input->id)
         {
-            fpos_t pos;
-            fgetpos(f, &pos);
+            // fpos_t pos;
+            // fgetpos(f, &pos);
             fseek(f, -sizeof(st), SEEK_CUR);
             fwrite(&newdata, sizeof(st), 1, f);
-            fsetpos(f, &pos);
+            // fsetpos(f, &pos);
         }
     }
-    print(input);
+    // print(input);
+    fclose(f);
     return 0;
 }

@@ -5,5 +5,9 @@ public interface MyBlockingQueue<E> {
 
     E take();
 
+    boolean offer(E e);
+
+    int size();
+
     boolean isFull();
 }

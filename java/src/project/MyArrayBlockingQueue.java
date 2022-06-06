@@ -8,8 +8,8 @@ public class MyArrayBlockingQueue<E> implements MyBlockingQueue<E> {
     private int len = Integer.MAX_VALUE;
     private int start = 0, end = 0;
     private Object[] meal;
-    private Lock lockAdd = new ReentrantLock(), lockTake = new ReentrantLock();
-    private Condition notFull = lockAdd.newCondition(), notEmpty = lockTake.newCondition();
+    private Lock lockAdd = new ReentrantLock();
+    private Condition notFull = lockAdd.newCondition(), notEmpty = lockAdd.newCondition();
 
 
     public MyArrayBlockingQueue() {
@@ -22,45 +22,58 @@ public class MyArrayBlockingQueue<E> implements MyBlockingQueue<E> {
     }
 
     public void put(E e) {
+        lockAdd.lock();
+        //System.out.println("put");
         try {
-            lockAdd.lock();
             while ((end + 1) % len == start) {
                 notFull.await();
             }
-            lockAdd.unlock();
         } catch (InterruptedException e1) {
             System.out.println("add wait error" + e1.getMessage());
         }
 
-        lockTake.lock();
         meal[end] = e;
         end = (end + 1) % len;
-        notEmpty.signal();
-        lockTake.unlock();
+        notEmpty.signalAll();
+        lockAdd.unlock();
     }
 
     public E take() {
+        lockAdd.lock();
+        //System.out.println("take");
         try {
-            lockTake.lock();
             while (start == end) {
                 notEmpty.await();
             }
-            lockTake.unlock();
         } catch (InterruptedException e1) {
-            System.out.println("take wait error" + e1.getMessage());
+            System.out.println("take wait error " + e1.getMessage());
         }
-        lockAdd.lock();
         E ans = (E) meal[start];
+        meal[start] = null;
         start = (start + 1) % len;
-        notFull.signal();
+        notFull.signalAll();
         lockAdd.unlock();
         return ans;
     }
 
+    public synchronized boolean offer(E e) {
+        if ((end + 1) % len == start) {
+            return false;
+        }
+        lockAdd.lock();
+        meal[end] = e;
+        end = (end + 1) % len;
+        lockAdd.unlock();
+        return true;
+    }
+
+    public int size() {
+        return (end - start + len) % len;
+    }
+
+
     public boolean isFull() {
         return start == end;
     }
-//    public void print() {
-//        System.out.println("start = " + start + " end = " + end);
-//    }
+
 }
