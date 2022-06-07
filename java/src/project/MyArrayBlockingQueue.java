@@ -46,15 +46,18 @@ public class MyArrayBlockingQueue<E> implements MyBlockingQueue<E> {
             while (start == end) {
                 notEmpty.await();
             }
+            E ans = (E) meal[start];
+            meal[start] = null;
+            start = (start + 1) % len;
+            notFull.signalAll();
+            return ans;
         } catch (InterruptedException e1) {
-            System.out.println("take wait error " + e1.getMessage());
+            System.out.print("");
+            //System.out.println(" take start = " + start + " end = " + end);
+        } finally {
+            lockAdd.unlock();
         }
-        E ans = (E) meal[start];
-        meal[start] = null;
-        start = (start + 1) % len;
-        notFull.signalAll();
-        lockAdd.unlock();
-        return ans;
+        return null;
     }
 
     public E poll(long time, TimeUnit unit) {
@@ -67,9 +70,11 @@ public class MyArrayBlockingQueue<E> implements MyBlockingQueue<E> {
                 }
                 time = notEmpty.awaitNanos(time);
             }
-            return take();
+            E ans = (E) meal[end];
+            end = (end + 1) % len;
+            return ans;
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            System.out.println("poll start = " + start + " end = " + end);
         } finally {
             lockAdd.unlock();
         }

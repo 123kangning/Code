@@ -9,7 +9,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class MyThreadPool implements MyPool {
-    private static MyBlockingQueue<Runnable> queue;
+    private static MyBlockingQueue<Runnable> queue = new MyArrayBlockingQueue<>(1000);
     private final HashSet<Worker> workers = new HashSet<>();
     private final List<Thread> listThread = new ArrayList<>();
     private int poolSize = 10;//线程池大小
@@ -23,7 +23,6 @@ public class MyThreadPool implements MyPool {
     private Condition notFull = lock.newCondition(), notEmpty = lockWork.newCondition();
 
     public MyThreadPool(int coreSize, int poolSize, long keepAliveTime, TimeUnit unit) {
-        queue = new MyArrayBlockingQueue<>(poolSize - 1);
         this.coreSize = coreSize;
         this.poolSize = poolSize;
         this.keepAliveTime = keepAliveTime;
@@ -34,26 +33,33 @@ public class MyThreadPool implements MyPool {
     public void execute(Runnable r) {
         if (r == null) throw new NullPointerException();
         //System.out.println("have " + c + "threads ");
+        //System.out.println("have " + queue.size() + " runnable");
         if (c < coreSize) {
             //System.out.println("c < coreSize");
             addThread(r, true);
         } else {
-            //System.out.print("try offer to queue ");
-            if (!queue.offer(r)) {
-                //System.out.println(" offer false");
-                addThread(r, false);
-            } else {
-                //System.out.println("count = " + count++);
+            if (c == 0) {
+                addThread(r, true);
             }
-
+            //System.out.print("try offer to queue ");
+            else if (!queue.offer(r)) {
+                System.out.println(" offer false");
+                addThread(r, false);
+            }
         }
     }
 
     public synchronized void addThread(Runnable r, boolean core) {
         c++;
         if (c > (core ? coreSize : poolSize)) {
-            System.out.println("addThread return | coreSize = " + coreSize + " c = " + c + " poolSize = " + poolSize);
+            int i = 0;
+            for (Thread e : listThread) if (e.isAlive()) i++;
+            System.out.println("addThread return | coreSize = " + coreSize +
+                    " c = " + c + " poolSize = " + poolSize + " queue.size() =  " + queue.size() + " thread.Alive() = " + i);
             return;
+        }
+        if (core) {
+            queue.put(r);
         }
         //System.out.println("enter");
         Worker worker = new Worker(r, core);
@@ -65,27 +71,29 @@ public class MyThreadPool implements MyPool {
     }
 
     public MyBlockingQueue<Runnable> shutdown() {
+        lock.lock();
         RUNNING = false;
         Thread t = null;
-//        try {
-//            Thread.sleep(100);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-        for (Thread thread : listThread) {
-            thread.interrupt();
+        try {
+            for (Thread thread : listThread) {
+                thread.interrupt();
+            }
+            for (Thread thread : listThread) {
+                System.out.println(thread.isAlive());
+//                System.out.println(queue.size());
+            }
+            return queue;
+        } finally {
+            lock.unlock();
         }
-        for (Thread thread : listThread) {
-            System.out.println(thread.isAlive());
-        }
-        return queue;
+
     }
 
     class Worker implements Runnable {
 
         public Worker(Runnable r, boolean core) {
-            //if (core)
-            queue.put(r);
+            if (!core)
+                r.run();
         }
 
         public void run() {
