@@ -1,13 +1,14 @@
 package test1;
 
 import java.io.IOException;
-import java.util.Random;
-import java.util.stream.DoubleStream;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class F001 {
     public static void main(String... args) throws IOException {
-        Random rand = new Random();
-        System.out.println(Double.MIN_VALUE);
-        DoubleStream.of(rand.nextDouble()).forEach(e -> System.out.println(e));
+        AtomicInteger a = new AtomicInteger(0);
+        a.getAndAdd(10);
+        a.getAndDecrement();
+        a.getAndIncrement();
+        System.out.println(a.get());
     }
 }
