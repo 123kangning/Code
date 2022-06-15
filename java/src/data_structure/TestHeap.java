@@ -6,7 +6,13 @@ import java.util.Comparator;
 
 public class TestHeap {
     public static void main(String... args){
-        Heap<Integer> heap=new Heap<>();
+        Comparator<Integer> c=new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o2-o1;
+            }
+        };
+        Heap<Integer> heap=new Heap<>(c);
         for(int i=0;i<20;i++){
             heap.add((int)(Math.random()*100));
         }
