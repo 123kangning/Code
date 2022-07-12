@@ -1,4 +1,4 @@
-package IO;
+package NIO;
 
 import java.io.*;
 import java.net.InetSocketAddress;
@@ -11,7 +11,7 @@ public class Serve1 {
     public static void main(String[] args) throws IOException {
         try(ServerSocket server=new ServerSocket()){
             server.setReuseAddress(true);
-            InetSocketAddress address=new InetSocketAddress(8881);
+            InetSocketAddress address=new InetSocketAddress(2032);
             server.bind(address);
             while(true){
 

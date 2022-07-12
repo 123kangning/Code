@@ -1,4 +1,4 @@
-package IO;
+package NIO;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

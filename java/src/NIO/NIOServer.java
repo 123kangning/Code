@@ -1,4 +1,4 @@
-package IO;
+package NIO;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -22,7 +22,7 @@ public class NIOServer {
         ssChannel.register(selector, SelectionKey.OP_ACCEPT);
 
         ServerSocket serverSocket = ssChannel.socket();
-        InetSocketAddress address = new InetSocketAddress("127.0.0.1", 8085);
+        InetSocketAddress address = new InetSocketAddress("127.0.0.1", 2024);
         serverSocket.bind(address);
 
         while (true) {
