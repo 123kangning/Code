@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 public class EchoServer {
     public static final Logger log=Logger.getLogger(EchoServer.class.toString());
-    public static int port=8886;
+    public static int port=8889;
     public static void main(String[] args) throws IOException,InterruptedException{
         log.setLevel(Level.INFO);
         ServerSocketChannel serverChannel=null;
@@ -30,13 +30,13 @@ public class EchoServer {
             serverChannel.configureBlocking(false);
 
             serverChannel.register(selector, SelectionKey.OP_ACCEPT);
-            log.info("serverSocket "+ss+" running... ");
             while(true){
                 try{
                     selector.select();
                 }catch(IOException ex){
                     ex.printStackTrace();
-                    break;
+                    while(true);
+
                 }
                 Set<SelectionKey> Keys=selector.selectedKeys();
                 Iterator<SelectionKey> iterator=Keys.iterator();
@@ -48,32 +48,43 @@ public class EchoServer {
                             ServerSocketChannel server=(ServerSocketChannel) key.channel();
                             SocketChannel client=server.accept();
                             client.configureBlocking(false);
-                            SelectionKey clientKey=client.register(selector,SelectionKey.OP_READ|SelectionKey.OP_WRITE);
-                            ByteBuffer buffer=ByteBuffer.allocate(1000);
-                            clientKey.attach(buffer);
+                            SelectionKey clientKey= client.register(selector,SelectionKey.OP_READ);
+
                         }
-                        if(key.isReadable()){
+                        else if(key.isReadable()){
+                            log.info("Readable "+key.channel().toString());
                             SocketChannel client=(SocketChannel)key.channel();
-                            ByteBuffer output=(ByteBuffer) key.attachment();
-                            client.read(output);
+                            ByteBuffer output=ByteBuffer.allocate(1000);
+                            if(-1==client.read(output)){
+                                key.cancel();
+                                log.info("write false...");
+                            }else{
+                                log.info("ago flip "+output);
+                                output.flip();
+                                log.info("after flip write ago "+output);
+                                TestBuffer1.show(output);
+//                                client.write(output);
+//                                output.compact();
+                                log.info("write success... "+output.get(0)+" | "+output.get(1)+" | "+output.get(2));
+                            }
 
                         }
-                        if(key.isWritable()){
-
-                            SocketChannel client=(SocketChannel) key.channel();
-                            ByteBuffer output=(ByteBuffer) key.attachment();
-
-                            output.flip();
-
-                            client.write(output);
-
-                            output.compact();
-
-                        }
+//                        else if(key.isWritable()){
+//
+//                            SocketChannel client=(SocketChannel) key.channel();
+//                            ByteBuffer output=(ByteBuffer) key.attachment();
+//
+//
+//
+//
+//
+//
+//                        }
                     }catch(IOException ex){
                         ex.printStackTrace();
                         key.cancel();
                         key.channel().close();
+                        while(true)System.out.print("");
                     }
                 }
             }

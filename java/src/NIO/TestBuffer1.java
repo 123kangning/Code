@@ -1,13 +1,14 @@
 package NIO;
 
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 
 public class TestBuffer1 {
     public static void main(String[] args) {
         ByteBuffer source = ByteBuffer.allocate(100);
         source.put("hello,world\nI'm zhangSan\nH".getBytes());
         split(source);
-        source.put("ow are you\n".getBytes());
+        source.put("ow are you\n    ".getBytes());
         split(source);
     }
     public static void split(ByteBuffer source){
@@ -15,12 +16,12 @@ public class TestBuffer1 {
         for(int i=0;i<source.limit();i++){
             if(source.get(i)=='\n'){
                 int length=i-source.position()+1;
-                ByteBuffer target=ByteBuffer.allocate(length+5);
+                ByteBuffer target=ByteBuffer.allocate(length);
                 for(int j=0;j<length;j++){
                     target.put(source.get());
                 }
                 target.flip();
-                show(target);
+                System.out.println(Charset.defaultCharset().decode(target));
             }
         }
         source.compact();
