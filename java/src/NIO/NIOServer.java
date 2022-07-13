@@ -13,14 +13,14 @@ import java.util.logging.Logger;
 
 public class NIOServer {
     public static final Logger log=Logger.getLogger(EchoServer.class.toString());
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException ,InterruptedException{
 
         Selector selector = Selector.open();
 
         ServerSocketChannel ssChannel = ServerSocketChannel.open();
         ssChannel.configureBlocking(false);
         SelectionKey ssKey=ssChannel.register(selector, SelectionKey.OP_ACCEPT);
-        InetSocketAddress address = new InetSocketAddress("127.0.0.1", 6665);
+        InetSocketAddress address = new InetSocketAddress("127.0.0.1", 6666);
         ssChannel.bind(address);
         log.info("ssKey = "+ssKey);
         while (true) {
@@ -32,6 +32,7 @@ public class NIOServer {
                 SelectionKey key = keyIterator.next();
                 keyIterator.remove();
                 log.info("hasNext ");
+                //Thread.sleep(2000);
                 try{
                     if (key.isAcceptable()) {
                         ServerSocketChannel ssChannel1 = (ServerSocketChannel) key.channel();
@@ -46,14 +47,27 @@ public class NIOServer {
                         if(sChannel.isOpen()){
                             read=sChannel.read(buffer);
                         }
-                        if(read!=-1){
-                            TestBuffer1.split(buffer);
-//
 
-                            log.info("write success... read ="+read);
-                        }else{
+                        if(read==-1){
                             log.info("read false... read ="+read);
                             key.cancel();
+
+                        }else if(read!=0){
+                            log.info("before split buffer is "+buffer);
+                            TestBuffer1.split(buffer);
+                            log.info("after split buffer is "+buffer);
+
+                            if(buffer.position()==buffer.limit()){
+                                buffer.flip();
+
+
+                                ByteBuffer buff=ByteBuffer.allocate(buffer.capacity()*2);
+                                buff.put(buffer);
+                                key.attach(buff);
+                                log.info("old buffer is "+ buffer);
+                            }
+                            log.info("write success... read ="+read);
+                            //Thread.sleep(10000);
                         }
 
                         //sChannel.close();
