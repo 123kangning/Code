@@ -16,23 +16,18 @@ public class TestBuffer1 {
     }
     public static void split(ByteBuffer source){
         source.flip();
-        log.info("in split source is "+source);
         for(int i=0;i<source.limit();i++){
             if(source.get(i)=='\n'){
-//                System.out.println("buffer = "+source);
                 int length=i-source.position()+1;
                 ByteBuffer target=ByteBuffer.allocate(length);
                 for(int j=0;j<length;j++){
-                    //System.out.print((char)source.get());
                     target.put(source.get());
                 }
                 target.flip();
                 System.out.println(Charset.defaultCharset().decode(target));
-
             }
         }
         source.compact();
-//        System.out.println("@@ source = "+source);
     }
     public static void show(ByteBuffer buffer){
         System.out.println("----------------------------------------------------------");

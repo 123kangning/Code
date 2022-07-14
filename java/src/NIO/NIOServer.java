@@ -14,7 +14,6 @@ import java.util.logging.Logger;
 public class NIOServer {
     public static final Logger log=Logger.getLogger(EchoServer.class.toString());
     public static void main(String[] args) throws IOException ,InterruptedException{
-
         Selector selector = Selector.open();
 
         ServerSocketChannel ssChannel = ServerSocketChannel.open();
@@ -22,7 +21,6 @@ public class NIOServer {
         SelectionKey ssKey=ssChannel.register(selector, SelectionKey.OP_ACCEPT);
         InetSocketAddress address = new InetSocketAddress("127.0.0.1", 6660);
         ssChannel.bind(address);
-        log.info("ssKey = "+ssKey);
         while (true) {
             selector.select();
             Set<SelectionKey> keys = selector.selectedKeys();
@@ -31,8 +29,7 @@ public class NIOServer {
             while (keyIterator.hasNext()) {
                 SelectionKey key = keyIterator.next();
                 keyIterator.remove();
-                log.info("hasNext ");
-                //Thread.sleep(2000);
+
                 try{
                     if (key.isAcceptable()) {
                         ServerSocketChannel ssChannel1 = (ServerSocketChannel) key.channel();
@@ -51,33 +48,25 @@ public class NIOServer {
                         if(read==-1){
                             log.info("read false... read ="+read);
                             key.cancel();
-
                         }else {
-                            log.info("before split buffer is "+buffer);
                             TestBuffer1.split(buffer);
-                            log.info("after split buffer is "+buffer);
 
                             if(buffer.position()==buffer.limit()){
                                 buffer.flip();
 
-
                                 ByteBuffer buff=ByteBuffer.allocate(buffer.capacity()*2);
                                 buff.put(buffer);
                                 key.attach(buff);
-                                log.info("old buffer is "+ buffer);
                             }
                             log.info("write success... read ="+read);
-                            //Thread.sleep(10000);
                         }
 
-                        //sChannel.close();
                     }
                 }catch(IOException ex){
                     log.info("IOException...");
                     ex.printStackTrace();
                     key.cancel();
                     key.channel().close();
-                    while(true);
                 }
             }
         }
