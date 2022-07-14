@@ -20,7 +20,7 @@ public class NIOServer {
         ServerSocketChannel ssChannel = ServerSocketChannel.open();
         ssChannel.configureBlocking(false);
         SelectionKey ssKey=ssChannel.register(selector, SelectionKey.OP_ACCEPT);
-        InetSocketAddress address = new InetSocketAddress("127.0.0.1", 6666);
+        InetSocketAddress address = new InetSocketAddress("127.0.0.1", 6660);
         ssChannel.bind(address);
         log.info("ssKey = "+ssKey);
         while (true) {
@@ -52,7 +52,7 @@ public class NIOServer {
                             log.info("read false... read ="+read);
                             key.cancel();
 
-                        }else if(read!=0){
+                        }else {
                             log.info("before split buffer is "+buffer);
                             TestBuffer1.split(buffer);
                             log.info("after split buffer is "+buffer);
@@ -73,6 +73,7 @@ public class NIOServer {
                         //sChannel.close();
                     }
                 }catch(IOException ex){
+                    log.info("IOException...");
                     ex.printStackTrace();
                     key.cancel();
                     key.channel().close();
