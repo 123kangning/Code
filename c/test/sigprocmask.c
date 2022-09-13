@@ -8,7 +8,7 @@ int main(void)
     sigset_t set;
     sigemptyset(&set);
     sigaddset(&set,SIGINT);
-    sigprocmask(SIG_BLOCK,&set,NULL);
+    sigprocmask(SIG_BLOCK,&set,NULL);//屏蔽 Ctrl + c
 
     while(1){
         sleep(1);
