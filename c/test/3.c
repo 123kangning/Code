@@ -2,10 +2,7 @@
 
 int main(void)
 {
-    int a=0^1^2^3^4;
-
-    printf("%d\n",a);
-    a^=1;
-    printf("%d\n",a);
+    
+    printf("%c\n",'\0'+32);
     return 0;
 }
