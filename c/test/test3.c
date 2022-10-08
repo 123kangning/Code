@@ -1,14 +1,20 @@
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 
 char* convertAndMerge(char words[][20]);//实现convertAndMerge函数（只翻转字母大小写，并且将其合并为一条字符串返回）
 
 int main(void)
 {
-    char words[2][20]={"welcome TO ","XIYOU linux"};
+     int data[] = {0X636c6577, 0X20656d6f, 0X78206f74, 0X756f7969,0x00};
+    int data2[] = {0X6e694c20, 0X67207875, 0X70756f72, 0X32303220, 0X00000a32};
+    char words[2][20];
+    strcpy(words[0],(char*)data);
+    strcpy(words[1],(char*)data2);
+    printf("%s\n",(char*)data);
+    printf("%s\n",(char*)data2);
+    
     char* str=convertAndMerge(words);
-    printf("%s\n",words[0]);
-    printf("%s\n",words[1]);
     printf("str = %s\n",str);
     return 0;
 }

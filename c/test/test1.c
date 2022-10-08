@@ -1,6 +1,4 @@
 #include<stdio.h>
-#include <string.h>
-#include <stdlib.h>
 
 //编写一个宏函数，求两个数中的最大值
 #define MAX(x,y) x>y?x:y //解决test1

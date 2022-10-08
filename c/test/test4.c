@@ -13,7 +13,7 @@ typedef struct {
 
 void hanoi(int n,char from ,char to ,char via){
     Frame stk[64],*top=stk-1;
-    call(n,from,to,via);
+    call(n,from,to,via);//#define call(_n,_from,_to,_via) ({*(++top)=(Frame){.pc=0,.n=(_n),.from=(_from),.to=(_to),.via=(_via)};})
     for (Frame *f;(f=top)>=stk;f->pc++){
         printf("f->pc = %d",f->pc);
         switch(f->pc){

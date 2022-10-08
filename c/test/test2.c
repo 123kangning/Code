@@ -1,6 +1,4 @@
 #include<stdio.h>
-#include <string.h>
-#include <stdlib.h>
 
 int flag=1;
 int judge(int check){
