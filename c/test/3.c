@@ -1,8 +1,19 @@
-#include <stdio.h>
-#define PRINT(X) printf("X"" = %d ;\n",X);
-int main(void)
+#include<stdio.h>
+
+void fuc()
 {
-    int x=19;
-    PRINT(x);;;;;;;
-    return 0;
+    if(printf("3+2>2")>printf("3+2<2")){
+        printf(" >\n");
+    }else{
+        printf(" <=\n");
+    }
+    printf("%d\n", printf("Xiyou Linux Group - 2%d",printf("")));
+}
+
+int main()
+{
+
+  fuc();
+  return 0;
+
 }
