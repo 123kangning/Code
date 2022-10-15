@@ -9,9 +9,9 @@
         ""
       ],
       "stopAtEntry": false,
-      "cwd": "/home/kangning/clone/Code/c/test",
+      "cwd": "/home/kangning/clone/Code/c/OS",
       "environment": [],
-      "program": "/home/kangning/clone/Code/c/test/build/Debug/outDebug",
+      "program": "/home/kangning/clone/Code/c/OS/build/Debug/outDebug",
       "internalConsoleOptions": "openOnSessionStart",
       "MIMode": "gdb",
       "miDebuggerPath": "/usr/bin/gdb",
