@@ -1,16 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define PGROUNDUP(sz) (((sz) + 4096 - 1) & ~(4096 - 1))
-int main(void) {
-  char str[100] = "\0";
-  char *add = "12345";
-  memcpy(str, add, 100);
-  printf("len = %d\n", strlen(str));
-  strcat(str, "qq");
-  printf("%s", str);
 
+int main(void) {
+  unsigned char a = 4 | 7;//a=111
+  a <<= 3;//a=111000
+  unsigned char b = 5 & 7;//b=101
+  b >>= 3;//b=0
+  unsigned char c = 6 ^ 7;//c=1
+  c = ~c;//c=1111 1110
+  short d = (a ^ c) << 3;//d=110 0011 0000
+  int e = d & 0x51;//e=1 0000
+  printf("%d %d %d %d %d\n", a, b, c, d, e);
   return 0;
 }
-// 00000fff
-// 10=ln1024
