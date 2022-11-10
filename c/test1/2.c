@@ -24,10 +24,10 @@ void merge(Node **a, int start, int end, int start1, int end1) {
     int i, j, count = 0;
     Node **temp = (Node **) malloc(sizeof(Node *) * (end1 - start + 1));
     for (i = start, j = start1; i <= end && j <= end1;) {
-        if (cmp(a[i], a[j]) == -1) {
-            temp[count++] = a[i++];
-        } else {
+        if (cmp(a[i], a[j]) == 1) {
             temp[count++] = a[j++];
+        } else {
+            temp[count++] = a[i++];
         }
     }
     if (i > end) {
@@ -53,42 +53,58 @@ void sort(Node **node, int start, int end) {
 
 Node *build(int *code) {
     Node **node = (Node **) calloc(108, sizeof(Node *));
+    int count1 = 0;
     for (int i = 0; i < 54; i++) {
+        if (code[i] == 0)continue;
         Node *n = (Node *) malloc(sizeof(Node));
         n->lchild = n->rchild = NULL;
         if (i < 26) {
             n->data = 'a' + i;
         } else if (i < 52) {
-            n->data = 'A' + i;
+            n->data = 'A' + i - 26;
         } else if (i == 52) {
             n->data = ' ';
         } else {
             n->data = '.';
         }
-
+//        if(n->data=='D'){
+//            while(1)printf("D");
+//        }
         n->code = (char *) malloc(100);
         n->weight = code[i];
-        node[i] = n;
+        node[count1++] = n;
+        //printf("i = %d\n",i);
     }
-    int start = 0,  count = 54;
+    //sort(node,0,count1-1);
+    for (int i = 0; i < count1; i++) {
+        printf("%c:%d  ", node[i]->data, node[i]->weight);
+    }printf("\n");
+    int start = 0, count = count1;
     while (count) {
         sort(node, start, start + count - 1);
+        for (int i = start; i < start+count-1; i++) {
+            printf("%c:%d  ", node[i]->data, node[i]->weight);
+        }printf("\n");
         if (count == 1) {
             return node[start];
         } else {
-            while(node[start]->weight==0){
-                start++;
-                count--;
-            }
+//            while (node[start]->weight == 0) {
+//                start++;
+//                count--;
+//            }
             Node *n1 = node[start++];
-            while(node[start]->weight==0){
-                start++;
-                count--;
-            }
+//            while (node[start]->weight == 0) {
+//                start++;
+//                count--;
+//            }
             Node *n2 = node[start++];
+            //!!!!!!!!!!!!!!!!
+//            if(n1->data=='D'||n2->data=='D'){
+//                while(1)printf("|");
+//            }
             Node *new = (Node *) malloc(sizeof(Node));
-            new->lchild = n1;
-            new->rchild = n2;
+            new->rchild = n1;
+            new->lchild = n2;
             new->weight = n1->weight + n2->weight;
             new->data = '\0';
             new->code = (char *) malloc(100);
@@ -125,7 +141,7 @@ void preCode(Node *root) {
     if (!root)
         return;
     preCode(root->lchild);
-    printf("%c %d %s \n", root->data, root->weight,root->code);
+    printf("%c %d %s \n", root->data, root->weight, root->code);
 
     preCode(root->rchild);
 }
@@ -134,15 +150,15 @@ void getCode(char ***hash, Node *root) {
     if (!root)
         return;
     getCode(hash, root->lchild);
-    char data=root->data;
+    char data = root->data;
     if (data != '\0') {
-        if(data>='a'&&data<='z'){
+        if (data >= 'a' && data <= 'z') {
             (*hash)[data - 'a'] = root->code;
-        }else if(data>='A'&&data<='Z'){
-            (*hash)[data - 'A'+26] = root->code;
-        }else if(data==' '){
+        } else if (data >= 'A' && data <= 'Z') {
+            (*hash)[data - 'A' + 26] = root->code;
+        } else if (data == ' ') {
             (*hash)[52] = root->code;
-        }else{
+        } else {
             (*hash)[53] = root->code;
         }
     }
@@ -153,13 +169,13 @@ char *coding(char **hash, char *s) {
     char *ans = (char *) malloc(10000);
     int len = strlen(s);
     for (int i = 0; i < len; i++) {
-        if(s[i]<='z'&&s[i]>='a'){
+        if (s[i] <= 'z' && s[i] >= 'a') {
             strcat(ans, hash[s[i] - 'a']);
-        }else if(s[i]<='Z'&&s[i]>='A'){
-            strcat(ans, hash[s[i] - 'A'+26]);
-        }else if(s[i]==' '){
+        } else if (s[i] <= 'Z' && s[i] >= 'A') {
+            strcat(ans, hash[s[i] - 'A' + 26]);
+        } else if (s[i] == ' ') {
             strcat(ans, hash[52]);
-        }else{
+        } else {
             strcat(ans, hash[53]);
         }
     }
@@ -364,6 +380,7 @@ char *uncoding(char **hash, char *s) {
             ss[count] = '\0';
             char *anss;
             if (anss = contain(hash, ss)) {
+                //printf("anss = %s\n", anss);
                 strcat(ans, anss);
                 i += L;
                 L = 0;
@@ -393,6 +410,7 @@ int *getWeight(char *s) {
 //    }
     return code;
 }
+
 int main() {
 
     char *s = (char *) malloc(1000), *s1 = (char *) malloc(1000),
@@ -402,23 +420,37 @@ int main() {
         strcat(s, temp);
         strcat(s, " ");
     } while (temp[strlen(temp) - 1] != '#' != 0);
-    s[strlen(s)-2]='\0';
+    s[strlen(s) - 2] = '\0';
     scanf("%s", s1);
     int *code = getWeight(s);
-
     Node *root = build(code);
-       char **hash = (char **)malloc(sizeof(char *) * 54);
-       for (int i = 0; i < 54; i++) {
-         hash[i] = (char *)malloc(100);
-       }
+    char **hash = (char **) malloc(sizeof(char *) * 54);
+    for (int i = 0; i < 54; i++) {
+        hash[i] = (char *) malloc(100);
+    }
+    // preCode(root);
+    // printf("-------------------------------------\n");
+    // printf("root->code = %s|\n", root->code);
     setCode(root);
-    preCode(root);
-       getCode(&hash, root);
-    //   for (int i = 0; i < 6; i++) {
-    //     printf("%c:%s\n", 'A' + i, hash[i]);
-    //   }
-       printf("%s\n", coding(hash, s));
-       printf("%s", uncoding(hash, s1));
+    // printf("root->code = %s|\n", root->code);
+    //preCode(root);
+    getCode(&hash, root);
+//       for (int i = 0; i < 54; i++) {
+//           if(i<26)
+//         printf("%c:%s\n", 'a' + i, hash[i]);
+//           else if(i<52)
+//               printf("%c:%s\n", 'A' + i-26, hash[i]);
+//           else if(i==52){
+//               printf("%c:%s\n", ' ', hash[i]);
+//           }else{
+//               printf("%c:%s\n", '.', hash[i]);
+//           }
+//       }
+    char *ans1 = coding(hash, s);
+    printf("%s\n", ans1);
+    char *ans2 = uncoding(hash, ans1);
+    printf("%s", ans2);
+    printf("%s", uncoding(hash, s1));
 
     return 0;
 }

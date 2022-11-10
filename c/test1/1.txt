@@ -1,0 +1,233 @@
+
+011001111110101111110100101010000110111100010011011000001110011110011100101011010011100001011111011000011010101011001101110010101011101011110110101000110001101001010101010001111000100001110111111101000001101010100000010011111110101110110001111101001111010111011100000011110101111000110110011001011000000111101011111101001010100001101111000100110110000011100111100111011111101110010100000100001001111000100111101011101110101010110011000000111101011111100010000100110111000111101010100111001010110111110101100010001111011110010101100001110001010000101001001111011101010111010011101010100011010111010101000001110100110111100111100011110110001111110011010000010000111110100111101011101100110110101111011111001000110
+ss = 0110011 ,anss = D
+ss = 1111 ,anss = a
+ss = 010 ,anss = t
+ss = 1111 ,anss = a
+ss = 110 ,anss =  
+ss = 1001 ,anss = s
+ss = 010 ,anss = t
+ss = 1000 ,anss = r
+ss = 01101 ,anss = u
+ss = 11100 ,anss = c
+ss = 010 ,anss = t
+ss = 01101 ,anss = u
+ss = 1000 ,anss = r
+ss = 001 ,anss = e
+ss = 110 ,anss =  
+ss = 0111 ,anss = i
+ss = 1001 ,anss = s
+ss = 110 ,anss =  
+ss = 010 ,anss = t
+ss = 101101 ,anss = h
+ss = 001 ,anss = e
+ss = 110 ,anss =  
+ss = 000101 ,anss = w
+ss = 1111 ,anss = a
+ss = 0110000 ,anss = y
+ss = 110 ,anss =  
+ss = 1010 ,anss = o
+ss = 101100 ,anss = f
+ss = 110 ,anss =  
+ss = 11100 ,anss = c
+ss = 1010 ,anss = o
+ss = 101110 ,anss = m
+ss = 101111 ,anss = p
+ss = 01101 ,anss = u
+ss = 010 ,anss = t
+ss = 001 ,anss = e
+ss = 1000 ,anss = r
+ss = 110 ,anss =  
+ss = 1001 ,anss = s
+ss = 010 ,anss = t
+ss = 1010 ,anss = o
+ss = 1000 ,anss = r
+ss = 1111 ,anss = a
+ss = 000100 ,anss = g
+ss = 001 ,anss = e
+ss = 110 ,anss =  
+ss = 1111 ,anss = a
+ss = 11101 ,anss = n
+ss = 00000 ,anss = d
+ss = 110 ,anss =  
+ss = 1010 ,anss = o
+ss = 1000 ,anss = r
+ss = 000100 ,anss = g
+ss = 1111 ,anss = a
+ss = 11101 ,anss = n
+ss = 0111 ,anss = i
+ss = 0110001 ,anss = z
+ss = 1111 ,anss = a
+ss = 010 ,anss = t
+ss = 0111 ,anss = i
+ss = 1010 ,anss = o
+ss = 11101 ,anss = n
+ss = 110 ,anss =  
+ss = 00000 ,anss = d
+ss = 1111 ,anss = a
+ss = 010 ,anss = t
+ss = 1111 ,anss = a
+ss = 000110 ,anss = .
+ss = 110 ,anss =  
+ss = 0110010 ,anss = A
+ss = 110 ,anss =  
+ss = 00000 ,anss = d
+ss = 1111 ,anss = a
+ss = 010 ,anss = t
+ss = 1111 ,anss = a
+ss = 110 ,anss =  
+ss = 1001 ,anss = s
+ss = 010 ,anss = t
+ss = 1000 ,anss = r
+ss = 01101 ,anss = u
+ss = 11100 ,anss = c
+ss = 010 ,anss = t
+ss = 01101 ,anss = u
+ss = 1000 ,anss = r
+ss = 001 ,anss = e
+ss = 110 ,anss =  
+ss = 0111 ,anss = i
+ss = 1001 ,anss = s
+ss = 110 ,anss =  
+ss = 1111 ,anss = a
+ss = 110 ,anss =  
+ss = 11100 ,anss = c
+ss = 1010 ,anss = o
+ss = 00001 ,anss = l
+ss = 00001 ,anss = l
+ss = 001 ,anss = e
+ss = 11100 ,anss = c
+ss = 010 ,anss = t
+ss = 0111 ,anss = i
+ss = 1010 ,anss = o
+ss = 11101 ,anss = n
+ss = 110 ,anss =  
+ss = 1010 ,anss = o
+ss = 101100 ,anss = f
+ss = 110 ,anss =  
+ss = 00000 ,anss = d
+ss = 1111 ,anss = a
+ss = 010 ,anss = t
+ss = 1111 ,anss = a
+ss = 110 ,anss =  
+ss = 001 ,anss = e
+ss = 00001 ,anss = l
+ss = 001 ,anss = e
+ss = 101110 ,anss = m
+ss = 001 ,anss = e
+ss = 11101 ,anss = n
+ss = 010 ,anss = t
+ss = 1001 ,anss = s
+ss = 110 ,anss =  
+ss = 010 ,anss = t
+ss = 101101 ,anss = h
+ss = 1111 ,anss = a
+ss = 010 ,anss = t
+ss = 110 ,anss =  
+ss = 001 ,anss = e
+ss = 0001111 ,anss = x
+ss = 0111 ,anss = i
+ss = 1001 ,anss = s
+ss = 010 ,anss = t
+ss = 110 ,anss =  
+ss = 0001110 ,anss = b
+ss = 001 ,anss = e
+ss = 010 ,anss = t
+ss = 000101 ,anss = w
+ss = 001 ,anss = e
+ss = 001 ,anss = e
+ss = 11101 ,anss = n
+ss = 110 ,anss =  
+ss = 1010 ,anss = o
+ss = 11101 ,anss = n
+ss = 001 ,anss = e
+ss = 110 ,anss =  
+ss = 1010 ,anss = o
+ss = 1000 ,anss = r
+ss = 110 ,anss =  
+ss = 101110 ,anss = m
+ss = 1010 ,anss = o
+ss = 1000 ,anss = r
+ss = 001 ,anss = e
+ss = 110 ,anss =  
+ss = 1001 ,anss = s
+ss = 101111 ,anss = p
+ss = 001 ,anss = e
+ss = 11100 ,anss = c
+ss = 0111 ,anss = i
+ss = 101100 ,anss = f
+ss = 0111 ,anss = i
+ss = 11100 ,anss = c
+ss = 110 ,anss =  
+ss = 1000 ,anss = r
+ss = 001 ,anss = e
+ss = 00001 ,anss = l
+ss = 1111 ,anss = a
+ss = 010 ,anss = t
+ss = 0111 ,anss = i
+ss = 1010 ,anss = o
+ss = 11101 ,anss = n
+ss = 1001 ,anss = s
+ss = 101101 ,anss = h
+ss = 0111 ,anss = i
+ss = 101111 ,anss = p
+ss = 1001 ,anss = s
+ss = 000110 ,anss = .
+Data structure is the way of computer storage and organization data. A data structure is a collection of data elements that exist between one or more specific relationships.
+ss = 0001111 ,anss = x
+ss = 1001 ,anss = s
+ss = 110 ,anss =  
+ss = 0111 ,anss = i
+ss = 1001 ,anss = s
+ss = 110 ,anss =  
+ss = 010 ,anss = t
+ss = 101101 ,anss = h
+ss = 001 ,anss = e
+ss = 110 ,anss =  
+ss = 000110 ,anss = .
+ss = 1111 ,anss = a
+ss = 0110010 ,anss = A
+ss = 110 ,anss =  
+ss = 1010 ,anss = o
+ss = 101100 ,anss = f
+ss = 110 ,anss =  
+ss = 11100 ,anss = c
+ss = 1010 ,anss = o
+ss = 101110 ,anss = m
+ss = 101111 ,anss = p
+ss = 01101 ,anss = u
+ss = 010 ,anss = t
+ss = 001 ,anss = e
+ss = 1000 ,anss = r
+ss = 110 ,anss =  
+ss = 1001 ,anss = s
+ss = 010 ,anss = t
+ss = 1010 ,anss = o
+ss = 1000 ,anss = r
+ss = 1111 ,anss = a
+ss = 000101 ,anss = w
+ss = 001 ,anss = e
+ss = 110 ,anss =  
+ss = 1111 ,anss = a
+ss = 11101 ,anss = n
+ss = 00000 ,anss = d
+ss = 110 ,anss =  
+ss = 1010 ,anss = o
+ss = 1000 ,anss = r
+ss = 000101 ,anss = w
+ss = 1111 ,anss = a
+ss = 11101 ,anss = n
+ss = 0111 ,anss = i
+ss = 0110011 ,anss = D
+ss = 1111 ,anss = a
+ss = 010 ,anss = t
+ss = 0111 ,anss = i
+ss = 1010 ,anss = o
+ss = 11101 ,anss = n
+ss = 110 ,anss =  
+ss = 00000 ,anss = d
+ss = 1111 ,anss = a
+ss = 010 ,anss = t
+ss = 1111 ,anss = a
+ss = 000100 ,anss = g
+xs is the .aA of computer storawe and orwaniDation datag
