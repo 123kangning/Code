@@ -1,101 +1,150 @@
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
-#define MAXVEX 10001
-typedef int Vextype;
-typedef struct {
-    int**arcs;
-    Vextype vex[MAXVEX + 1];
-    int vexnum;
-    int arcnum;
-} AdjMatrix;
+typedef struct job {
+  void (*function)(void *arg);
+  void *arg;
+  struct job *next;
+} job;
 
-void Creat_AdjMatrix(AdjMatrix *G); //创建邻接矩阵
-int LocateVex_AdjMatrix(AdjMatrix *G, Vextype v);
-void test(AdjMatrix M);
+typedef struct thread_pool {
+  int num_threads;
+  pthread_t *threads;
+  job *queue_head;
+  job *queue_tail;
+  pthread_mutex_t queue_lock;
+  pthread_cond_t queue_not_empty;
+  int is_shutdown;
+} thread_pool;
+
+void *thread_function(void *arg);
+
+// 初始化线程池
+void thread_pool_init(thread_pool *pool, int num_threads) {
+  pool->num_threads = num_threads;
+  pool->threads = (pthread_t *)malloc(sizeof(pthread_t) * num_threads);
+  pool->queue_head = NULL;
+  pool->queue_tail = NULL;
+  pthread_mutex_init(&(pool->queue_lock), NULL);
+  pthread_cond_init(&(pool->queue_not_empty), NULL);
+  pool->is_shutdown = 0;
+
+  // 创建线程
+  for (int i = 0; i < num_threads; i++) {
+    pthread_create(&(pool->threads[i]), NULL, thread_function, (void *)pool);
+    printf("create thread id = %ld\n", pool->threads[i]);
+  }
+}
+
+// 销毁线程池
+void thread_pool_destroy(thread_pool *pool) {
+  // 设置标志位，通知线程退出
+  pool->is_shutdown = 1;
+  printf("1\n");
+  // 等待所有线程退出
+  for (int i = 0; i < pool->num_threads; i++) {
+    printf("thread id = %ld\n", pool->threads[i]);
+    if (pool->threads[i] <= 0) {
+      printf("thread %ld 已经被exit\n", pool->threads[i]);
+      continue;
+    }
+    pthread_cond_signal(&(pool->queue_not_empty));
+    pthread_join(pool->threads[i], NULL);
+  }
+
+  // 销毁互斥锁和条件变量
+  pthread_mutex_destroy(&(pool->queue_lock));
+  pthread_cond_destroy(&(pool->queue_not_empty));
+
+  // 释放内存
+  free(pool->threads);
+}
+
+// 向线程池中添加任务
+void thread_pool_enqueue(thread_pool *pool, void (*function)(void *arg),
+                         void *arg) {
+  job *new_job = (job *)malloc(sizeof(job));
+  new_job->function = function;
+  new_job->arg = arg;
+  new_job->next = NULL;
+
+  // 加锁修改队列
+  pthread_mutex_lock(&(pool->queue_lock));
+
+  if (pool->queue_tail == NULL) {
+    pool->queue_head = new_job;
+    pool->queue_tail = new_job;
+  } else {
+    pool->queue_tail->next = new_job;
+    pool->queue_tail = new_job;
+  }
+
+  // 通知线程有新的任务可以执行
+  pthread_cond_signal(&(pool->queue_not_empty));
+
+  // 解锁
+  pthread_mutex_unlock(&(pool->queue_lock));
+}
+
+// 线程函数
+void *thread_function(void *arg) {
+  thread_pool *pool = (thread_pool *)arg;
+
+  while (1) {
+    // 加锁获取任务
+    pthread_mutex_lock(&(pool->queue_lock));
+    // 判断是否要退出
+    while (pool->queue_head == NULL && !pool->is_shutdown) {
+      //   printf("判断是否要退出,%d,%d\n", pool->queue_head == NULL,
+      //          pool->is_shutdown);
+      pthread_mutex_unlock(&(pool->queue_lock));
+      pthread_cond_wait(&(pool->queue_not_empty), &(pool->queue_lock));
+    }
+
+    // if (pool->is_shutdown) {
+    //   // 释放锁并退出线程
+    //   printf("pool->is_shutdown\n");
+    //   pthread_mutex_unlock(&(pool->queue_lock));
+    //   pthread_exit(NULL);
+    // }
+
+    // 取出一个任务
+    job *next_job = pool->queue_head;
+    pool->queue_head = next_job->next;
+    printf("stap\n");
+    if (pool->queue_head == NULL) {
+      pool->queue_tail = NULL;
+    }
+
+    // 释放锁
+    pthread_mutex_unlock(&(pool->queue_lock));
+
+    // 执行任务
+    (next_job->function)(next_job->arg);
+    free(next_job);
+  }
+
+  return NULL;
+}
+// 定义任务函数
+void print_hello(void *arg) { printf("Hello, %s!\n", (char *)arg); }
 
 int main() {
-    AdjMatrix gM;
-    Creat_AdjMatrix(&gM);
-    test(gM);
-    return 0;
-}
+  // 创建线程池
+  thread_pool pool;
+  thread_pool_init(&pool, 4);
+  // 添加任务
+  thread_pool_enqueue(&pool, print_hello, "Alice");
+  thread_pool_enqueue(&pool, print_hello, "Bob");
+  thread_pool_enqueue(&pool, print_hello, "Charlie");
+  thread_pool_enqueue(&pool, print_hello, "Charlie");
 
-void Creat_AdjMatrix(AdjMatrix *G) //创建邻接矩阵
-{
-    int i, j, k;
-    Vextype v1, v2;
-    scanf("%d %d", &(G->vexnum), &(G->arcnum));
-    G->arcs=(int**)malloc(sizeof(int*)*(G->vexnum+1));
-    if(G->vexnum>=1500)while(1);
-    for (i = 1; i <= G->vexnum; i++) {
-        G->arcs[i]=(int*)malloc(sizeof(int)*(G->vexnum+1));
-        for (j = 1; j <= G->vexnum; j++)
-            G->arcs[i][j] = 0;
-    }
-    for (k = 1; k <= G->arcnum; k++) {
-        scanf("%d %d", &v1, &v2);
-        G->arcs[v1][v2] = 1;
-        G->arcs[v2][v1] = 1;
-    }
-}
+  // 等待所有任务完成并销毁线程池
+  sleep(1);
+  printf("thread_pool_destroy\n");
+  thread_pool_destroy(&pool);
 
-int LocateVex_AdjMatrix(AdjMatrix *G, Vextype v) //输出邻接表
-{
-    int i;
-    for (i = 1; i <= G->vexnum; i++)
-        if (G->vex[i] == v)
-            return i;
-    return 0;
-}
-/* 请在这里填写答案 */
-int min(int a,int b){
-    return a>b?b:a;
-}
-void test(AdjMatrix G) {
-    int n=0;
-    scanf("%d",&n);
-    int*num=(int*)malloc(sizeof(int)*n);
-    for(int i=0;i<n;i++){
-        scanf("%d",&num[i]);
-        //printf("%d ",num[i]);
-    }//printf("\n");
-    for(int i=1;i<=G.vexnum;i++){
-        for(int j=1;j<=G.vexnum;j++){
-            if(G.arcs[i][j]){
-                for(int k=1;k<=G.vexnum;k++){
-                    if(G.arcs[j][k]){
-                        if(G.arcs[i][k]==0)
-                            G.arcs[i][k]=G.arcs[i][j]+G.arcs[j][k];
-                        else
-                            G.arcs[i][k]=min(G.arcs[i][k],G.arcs[i][j]+G.arcs[j][k]);
-                    }
-
-                }
-            }
-        }
-    }
-//         for(int i=1;i<=G.vexnum;i++){
-//         for(int j=1;j<=G.vexnum;j++)printf("%d ",G.arcs[i][j]);
-//         printf("\n");
-//     }
-    int sign=0;//sign==1时，非连通
-    for(int i=1;i<=G.vexnum;i++){
-        for(int j=1;j<=G.vexnum;j++){
-            if(!G.arcs[i][j]){
-                sign=1;
-                goto here;
-            }
-        }
-    }
-    here:
-    for(int i=0;i<n;i++){
-        double sum=0;
-        for(int j=1;j<=G.vexnum;j++){
-            sum+=G.arcs[num[i]][j];
-        }
-        sum=(G.vexnum-1)/(sum-G.arcs[num[i]][num[i]]);
-        if(sign)sum=0;
-        printf("Cc(%d)=%.2lf\n",num[i],sum);
-    }
+  return 0;
 }
