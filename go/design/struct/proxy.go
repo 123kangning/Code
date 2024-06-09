@@ -1,5 +1,7 @@
 package design
 
+//理解为加了前后hook函数
+
 type Subject interface {
 	Request()
 }
@@ -21,8 +23,8 @@ func (p *Proxy) Request() {
 	println("post process")
 }
 
-//func main() {
-//	subject := &ConcreteSubject{}
-//	proxy := &Proxy{subject}
-//	proxy.Request() // Output: Proxy's pre-processing, ConcreteSubject's request, Proxy's post-processing
-//}
+func ProxyTest() {
+	subject := &ConcreteSubject{}
+	proxy := &Proxy{subject}
+	proxy.Request() // Output: Proxy's pre-processing, ConcreteSubject's request, Proxy's post-processing
+}

@@ -1,12 +1,4 @@
-package main
-
-import "fmt"
-
-func main() {
-	nums := []int{1, 12, 3, 14, 5, 16, 7, 18, 9}
-	heapSort(nums)
-	fmt.Print(nums)
-}
+package algo
 
 // 堆排序
 func heapSort(arr []int) []int {

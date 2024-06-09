@@ -20,11 +20,11 @@ func (b *BananaFactory) CreateFruit() Fruit {
 	return &banana{}
 }
 
-//func main() {
-//	appleFactory := &AppleFactory{}
-//	apple := appleFactory.CreateFruit()
-//	apple.Show()
-//	bananaFactory := &BananaFactory{}
-//	banana := bananaFactory.CreateFruit()
-//	banana.Show()
-//}
+func FacMethodTest() {
+	appleFactory := &AppleFactory{}
+	apple := appleFactory.CreateFruit()
+	apple.Show()
+	bananaFactory := &BananaFactory{}
+	banana := bananaFactory.CreateFruit()
+	banana.Show()
+}

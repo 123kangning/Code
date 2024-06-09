@@ -18,6 +18,7 @@ type banana struct {
 func (b *banana) Show() {
 	println("banana")
 }
+
 func NewFruit(name string) Fruit {
 	switch name {
 	case "apple":
@@ -26,4 +27,11 @@ func NewFruit(name string) Fruit {
 		return &banana{}
 	}
 	return nil
+}
+
+func SimpleFacTest() {
+	apple := NewFruit("apple")
+	apple.Show()
+	banana := NewFruit("banana")
+	banana.Show()
 }

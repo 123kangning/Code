@@ -1,5 +1,9 @@
 package design
 
+import "fmt"
+
+//一个人穿了一件又一件漂亮的衣服，这些衣服就是装饰器，人就是具体的
+
 type Component interface {
 	Operate() string
 }
@@ -43,12 +47,12 @@ func (cd2 *ConcreteDecorator2) Operate() string {
 	return cd2.Decorator.Operate() + " ConcreteDecorator2's "
 }
 
-//func main() {
-//	component := &design.ConcreteComponent{}
-//	decorator := design.NewDecorator(component)
-//	fmt.Println(decorator.Operate())
-//	decorator1 := design.NewConcreteDecorator1(decorator)
-//	fmt.Println(decorator1.Operate())
-//	decorator2 := design.NewConcreteDecorator2(decorator1)
-//	fmt.Println(decorator2.Operate())//多个装饰器的组合，链式调用
-//}
+func DecoratorTest() {
+	component := &ConcreteComponent{}
+	decorator := NewDecorator(component)
+	fmt.Println(decorator.Operate())
+	decorator1 := NewConcreteDecorator1(decorator)
+	fmt.Println(decorator1.Operate())
+	decorator2 := NewConcreteDecorator2(decorator1)
+	fmt.Println(decorator2.Operate()) //多个装饰器的组合，链式调用
+}
