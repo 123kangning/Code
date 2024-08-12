@@ -1,38 +1,51 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
+// s,[]s
 func main() {
-	nums := []int{1, 12, 3, 14, 5, 16, 7, 18, 9}
-	heapSort(nums)
-	fmt.Print(nums)
+	var x int8 = 127
+	fmt.Println(math.MaxInt8)
+	fmt.Println(reverse1(x))
 }
 
-// 堆排序
-func heapSort(arr []int) []int {
-	//构建大顶堆
-	for i := len(arr)/2 - 1; i >= 0; i-- {
-		adjustHeap(arr, i, len(arr))
+// 逐步二进制，避免循环溢出
+func reverse(x int8) (int8, bool) {
+	fmt.Println("x=", x)
+	var base int8 = 0
+	for x > 0 {
+		t := x % 10
+		x /= 10
+		tt := base << 1
+		for i := 0; i < 3; i++ {
+			base <<= 1
+			if base < 0 {
+				return 0, false
+			}
+		}
+		base = base + tt + t
+		if base < 0 {
+			return 0, false
+		}
 	}
-	//调整堆结构+交换堆顶元素与末尾元素
-	for j := len(arr) - 1; j > 0; j-- {
-		arr[0], arr[j] = arr[j], arr[0]
-		adjustHeap(arr, 0, j)
-	}
-	return arr
+	return base, true
 }
-func adjustHeap(arr []int, i, length int) {
-	temp := arr[i]
-	for k := 2*i + 1; k < length; k = 2*k + 1 {
-		if k+1 < length && arr[k] < arr[k+1] {
-			k++
+
+// base增加前，进行溢出判断：base*10+t>max => base>(max-t)/10
+func reverse1(x int8) (int8, bool) {
+	fmt.Println("x=", x)
+	var max int8 = math.MaxInt8
+	var base int8 = 0
+	for x > 0 {
+		t := x % 10
+		x /= 10
+		if base > (max-t)/10 {
+			return 0, false
 		}
-		if arr[k] > temp {
-			arr[i] = arr[k]
-			i = k
-		} else {
-			break
-		}
+		base = base*10 + t
 	}
-	arr[i] = temp
+	return base, true
 }

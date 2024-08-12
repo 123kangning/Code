@@ -14,5 +14,7 @@ func TestDesign(t *testing.T) {
 	//design.ProxyTest()
 
 	//design.StrategyTest()
-	design.CommandTest()
+	//design.CommandTest()
+	//design.ObserverTest()
+	design.HandlerTest()
 }
