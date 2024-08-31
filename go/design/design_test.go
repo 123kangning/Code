@@ -1,20 +1,21 @@
-package design
+package design__test
 
 import (
-	design "test/design/action"
+	design1 "test/design/create"
 	"testing"
 )
 
 func TestDesign(t *testing.T) {
-	//design.FacMethodTest()
-	//design.SimpleFacTest()
+	//design1.FacMethodTest()
+	//design1.SimpleFacTest()
+	design1.SingleTest()
 
-	//design.DecoratorTest()
-	//design.FacadeTest()
-	//design.ProxyTest()
+	//design2.DecoratorTest()
+	//design2.FacadeTest()
+	//design2.ProxyTest()
 
-	//design.StrategyTest()
-	//design.CommandTest()
-	//design.ObserverTest()
-	design.HandlerTest()
+	//design3.StrategyTest()
+	//design3.CommandTest()
+	//design3.ObserverTest()
+	//design3.HandlerTest()
 }
