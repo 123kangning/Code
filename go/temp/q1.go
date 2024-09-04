@@ -1,7 +1,6 @@
 package temp
 
 import (
-	"fmt"
 	"math"
 )
 
@@ -16,7 +15,6 @@ func GetCounter() func(w float64) int {
 		lastLevel = cur
 		w2Cost[i] = cur
 	}
-	fmt.Println(w2Cost)
 	return func(w float64) int {
 		realW := int(math.Ceil(w))
 		return w2Cost[realW]
