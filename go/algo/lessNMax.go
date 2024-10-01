@@ -6,9 +6,9 @@ import (
 )
 
 // LessNMax 小于n的最大数，这个数组由nums中的数字组成。
-func LessNMax() {
-	n := 25121
-	nums := []int{1, 2, 4, 9}
+func LessNMax(n int, nums []int) {
+	//n = 2533
+	//nums = []int{1, 2, 4, 9} //默认排好序,结果为2499
 	max := -10000
 	for _, v := range nums {
 		if v > max {
