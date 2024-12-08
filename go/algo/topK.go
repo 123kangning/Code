@@ -14,7 +14,7 @@ func TopK1(nums []int, k int) int {
 		return -1
 	}
 
-	return quickSelect(nums, 0, n-1, k)
+	return quickSelect(nums, 0, n-1, k-1)
 }
 
 func quickSelect(nums []int, low, high, k int) int {
@@ -22,30 +22,24 @@ func quickSelect(nums []int, low, high, k int) int {
 		return nums[low]
 	}
 
-	mid := (low + high) >> 1
+	mid := low
 	midVal := nums[mid]
-	nums[low], nums[mid] = nums[mid], nums[low]
-	l, r := low, high+1
+	l, r := low-1, high+1
 	for l < r {
 		l++
-		for l <= high && nums[l] >= midVal {
+		for l <= high && nums[l] > midVal {
 			l++
 		}
 		r--
-		for r > low && nums[r] <= midVal {
+		for r >= low && nums[r] < midVal {
 			r--
 		}
 		if l < r {
 			nums[l], nums[r] = nums[r], nums[l]
 		}
 	}
-	if r > 0 {
-		//打乱顺序，避免陷入死循环
-		nums[low], nums[r] = nums[r], nums[low]
-	}
-	cnt := r - low + 1
-	if k <= cnt {
+	if k <= r {
 		return quickSelect(nums, low, r, k)
 	}
-	return quickSelect(nums, r+1, high, k-cnt)
+	return quickSelect(nums, r+1, high, k)
 }
