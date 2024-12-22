@@ -146,3 +146,22 @@ func TestFibonacci(t *testing.T) {
 		})
 	}
 }
+func TestChineseToNumber(t *testing.T) {
+	type args struct {
+		chineseNum []rune
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{"1", args{[]rune("一千五百万四十三亿一千五百万三千四百二十一")}, 1500004315003421},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := ChineseToNumber(tt.args.chineseNum); got != tt.want {
+				t.Errorf("ChineseToNumber() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
