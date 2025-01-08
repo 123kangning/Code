@@ -1,9 +1,10 @@
 package main
 
-import "strings"
+import (
+	"strings"
+)
 
 func main() {
-
 }
 func choose(a, b string) string {
 	if len(a) > len(b) {
