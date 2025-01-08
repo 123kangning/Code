@@ -34,6 +34,7 @@ func quickSelect(nums []int, low, high, k int) int {
 		for r >= low && nums[r] < midVal {
 			r--
 		}
+		//下标<=r的元素，都是>=midVal的
 		if l < r {
 			nums[l], nums[r] = nums[r], nums[l]
 		}
