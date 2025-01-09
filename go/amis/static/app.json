@@ -1,60 +1,38 @@
 {
   "type": "app",
-  "logo": "/Users/xiwangxue/clone/Code/go/amis/static/img.png",
+  "logo": "https://static-inc.xiwang.com/users_inner_thoughts/%E5%AE%A2%E6%88%B7%E4%B9%8B%E5%A3%B0_big.png",
   "brandName": "用户之声后台",
   "pages": [
     {
-      "label": "主页",
+      "visible": true,
       "url": "/",
+      "label": "主页",
       "redirect": "/opinion"
     },
     {
+      "visible": true,
+      "label": "低代码管理",
       "icon": "fa fa-cube",
-      "label": "Schema管理",
-      "visible": false,
+      "redirect": " ",
       "children": [
         {
-          "url": "/schema",
-          "label": "Schema列表",
-          "visible": false,
-          "schemaApi": "--server--/admin/feedback/api/v1/schema?page_key=schema.list"
-        }
-      ]
-    },
-    {
-      "icon": "fa fa-cube",
-      "label": "设置",
-      "visible": false,
-      "children": [
-        {
-          "url": "/operate_log",
-          "label": "操作日志列表",
-          "visible": false,
-          "schemaApi": "--server--/admin/feedback/api/v1/schema?page_key=operate_log.list"
+          "visible": true,
+          "url": "/app",
+          "label": "app列表",
+          "icon": "fa fa-cube",
+          "redirect": " ",
+          "schemaApi": "http://127.0.0.1/admin/feedback/api/v1/schema?page_key=app.list"
         },
         {
-          "url": "/users",
-          "label": "用户列表页",
-          "visible": false,
-          "schemaApi": "--server--/admin/feedback/api/v1/schema?page_key=user.list"
-        },
-        {
-          "url": "/admin_log",
-          "label": "管理后台操作日志",
-          "visible": false,
-          "schemaApi": "--server--/admin/feedback/api/v1/schema?page_key=admin_log.list"
-        }
-      ]
-    },
-    {
-      "icon": "fa fa-cube",
-      "label": "用户之声管理",
-      "children": [
-        {
-          "url": "/opinion",
-          "label": "用户之声列表"
+          "visible": true,
+          "url": "/menu",
+          "label": "菜单列表",
+          "icon": "fa fa-cube",
+          "redirect": " ",
+          "schemaApi": "http://127.0.0.1/admin/feedback/api/v1/schema?page_key=menu.list"
         }
       ]
     }
-  ]
+  ],
+  "id": "u:e845302d7cc2"
 }
