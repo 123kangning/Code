@@ -7,12 +7,6 @@ import (
 	"time"
 )
 
-const (
-	searchUrl   = "/file/search"
-	putUrl      = "/file/put"
-	downLoadUrl = "/file/get"
-)
-
 func InitRouter() *gin.Engine {
 	r := gin.New()
 	r.Use(cors.New(cors.Config{

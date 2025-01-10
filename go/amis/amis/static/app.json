@@ -19,7 +19,14 @@
           "url": "/list",
           "label": "文件列表",
           "icon": "fa fa-cube",
-          "schemaApi": "http://127.0.0.1:8080/schema?page_key=list"
+          "schemaApi": "/api/schema?page_key=list"
+        },
+        {
+          "visible": true,
+          "url": "/put",
+          "label": "文件上传",
+          "icon": "fa fa-cube",
+          "schemaApi": "/api/schema?page_key=put_file"
         }
       ]
     }

@@ -1,5 +1,10 @@
 {
   "type": "page",
+  "id": "u:fb1c598358be",
+  "asideResizor": false,
+  "pullRefresh": {
+    "disabled": true
+  },
   "body": [
     {
       "type": "crud",
@@ -48,12 +53,6 @@
       "headerToolbar": [
         "filter-toggler",
         {
-          "type": "button",
-          "label": "文件上传",
-          "level": "primary",
-          "id": "u:e726ddbac670"
-        },
-        {
           "type": "columns-toggler",
           "align": "right"
         },
@@ -93,25 +92,12 @@
               "level": "info",
               "actionType": "ajax",
               "id": "u:dfcd0adeda62",
-              "visibleOn": "pid==-1",
               "api": "get: /api/file/get?hash=${hash}"
             }
           ]
         }
       ],
-      "perPageAvailable": [
-        5,
-        10,
-        20,
-        50,
-        100
-      ],
       "messages": {}
     }
-  ],
-  "id": "u:fb1c598358be",
-  "asideResizor": false,
-  "pullRefresh": {
-    "disabled": true
-  }
+  ]
 }
