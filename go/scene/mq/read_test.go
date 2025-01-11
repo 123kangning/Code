@@ -12,7 +12,7 @@ import (
 func TestRead(t *testing.T) {
 	// make a new reader that consumes from topic-A
 	r := kafka.NewReader(kafka.ReaderConfig{
-		Brokers:  []string{"localhost:9092"},
+		Brokers:  []string{"localhost:9091", "localhost:9092", "localhost:9093"},
 		GroupID:  "order",
 		Topic:    "topic-A",
 		MaxBytes: 10e6, // 10MB
