@@ -165,3 +165,58 @@ func TestChineseToNumber(t *testing.T) {
 		})
 	}
 }
+func TestRemoveNthFromEnd(t *testing.T) {
+	type fields struct {
+		list *LNode
+	}
+	type args struct {
+		n int
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		args    args
+		wantErr bool
+	}{
+		{
+			name:    "n正常==1",
+			fields:  func() fields { f, _ := NewList(10); return fields{list: f} }(),
+			args:    args{n: 1},
+			wantErr: false,
+		},
+		{
+			name:    "n正常==10",
+			fields:  func() fields { f, _ := NewList(10); return fields{list: f} }(),
+			args:    args{n: 10},
+			wantErr: false,
+		},
+		{
+			name:    "n>10",
+			fields:  func() fields { f, _ := NewList(10); return fields{list: f} }(),
+			args:    args{n: 11},
+			wantErr: true,
+		},
+		{
+			name:    "n==0",
+			fields:  func() fields { f, _ := NewList(10); return fields{list: f} }(),
+			args:    args{n: 0},
+			wantErr: true,
+		},
+		{
+			name:    "n==-1",
+			fields:  func() fields { f, _ := NewList(10); return fields{list: f} }(),
+			args:    args{n: -1},
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			_, err := RemoveNthFromEnd(tt.fields.list, tt.args.n)
+			//NodePrint(res)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("RemoveNthFromEnd() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+		})
+	}
+}
