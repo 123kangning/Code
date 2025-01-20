@@ -220,3 +220,51 @@ func TestRemoveNthFromEnd(t *testing.T) {
 		})
 	}
 }
+func TestBitMap_Exist(t *testing.T) {
+	type field struct {
+		bitMap *BitMap
+	}
+	type args struct {
+		fillNums  []int
+		existNums []int
+	}
+	bMap := NewBitMap(10)
+	tests := []struct {
+		name  string
+		field field
+		args  args
+		want  bool
+	}{
+		{
+			name: "存在",
+			field: field{
+				bitMap: bMap,
+			},
+			args: args{
+				fillNums:  []int{1, 2, 3, 4, 5},
+				existNums: []int{1, 2, 3, 4, 5},
+			},
+			want: true,
+		}, {
+			name: "不存在",
+			field: field{
+				bitMap: bMap,
+			},
+			args: args{
+				fillNums:  []int{1, 2, 3, 4},
+				existNums: []int{1, 2, 3, 4, 5, 6},
+			},
+			want: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			for _, v := range tt.args.fillNums {
+				tt.field.bitMap.Fill(v)
+			}
+			if got := tt.field.bitMap.Exists(tt.args.existNums); got != tt.want {
+				t.Errorf("BitMap.Exist() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
